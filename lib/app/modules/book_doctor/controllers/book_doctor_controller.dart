@@ -42,9 +42,9 @@ class BookDoctorController extends GetxController {
   late PatientRepository _patientRepository;
   late DoctorRepository _doctorRepository;
   late SettingRepository _settingRepository;
-
+  var appointments = <Appointment>[].obs;
   Address get currentAddress => Get.find<SettingsService>().address.value;
-
+  var isLoading = true.obs;
   BookDoctorController() {
     _appointmentRepository = AppointmentRepository();
     _settingRepository = SettingRepository();
@@ -56,20 +56,21 @@ class BookDoctorController extends GetxController {
   void onInit() async {
     final _doctor = (Get.arguments['doctor'] as Doctor);
     this.appointment.value = Appointment(
-      appointmentAt: DateTime.now(),
-      doctor: _doctor,
-      clinic: _doctor.clinic,
-      taxes: _doctor.clinic.taxes,
-      online: true,
-      user: Get.find<AuthService>().user.value,
-      address: _doctor.clinic.address,
-      coupon: new Coupon()
+        appointmentAt: DateTime.now(),
+        doctor: _doctor,
+        clinic: _doctor.clinic,
+        taxes: _doctor.clinic.taxes,
+        online: true,
+        user: Get.find<AuthService>().user.value,
+        address: _doctor.clinic.address,
+        coupon: new Coupon()
     );
     await getAddresses();
     await getTimes();
     await getPatients();
     await getPattern();
     super.onInit();
+
   }
   Future refreshPatients({bool showMessage = false}) async {
     this.patients.clear();
@@ -299,6 +300,8 @@ class BookDoctorController extends GetxController {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
   }
+
+
 
 
 }

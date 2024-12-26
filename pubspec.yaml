@@ -61,13 +61,13 @@ dependencies:
   google_maps_flutter: ^2.10.0
   map_launcher: ^3.5.0
   google_maps_place_picker_mb: ^3.1.2
-
+  google_api_headers: ^2.0.3
 
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  collection: 1.18.0
+  collection: ^1.18.0
 
 
   intl: any

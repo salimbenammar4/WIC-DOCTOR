@@ -31,26 +31,26 @@ class Doctor extends Model {
   Address? _address;
   Doctor(
       {String? id,
-      String? name,
-      String? description,
-      List<Media>? images,
-      double? price,
-      double? discountPrice,
-      List<AvailabilityHour>? availabilityHours,
-      User? user,
-      bool? available,
-      double? rate,
-      int? totalReviews,
-      bool? featured,
-      bool? enableAppointment,
-      bool? enableAtClinic,
-      bool? enableOnlineConsultation,
-      bool? enableAtCustomerAddress,
-      bool? isFavorite,
-      List<Speciality>? specialities,
-      List<Speciality>? subSpecialities,
-      Clinic? clinic,
-      String? sessionDuration,
+        String? name,
+        String? description,
+        List<Media>? images,
+        double? price,
+        double? discountPrice,
+        List<AvailabilityHour>? availabilityHours,
+        User? user,
+        bool? available,
+        double? rate,
+        int? totalReviews,
+        bool? featured,
+        bool? enableAppointment,
+        bool? enableAtClinic,
+        bool? enableOnlineConsultation,
+        bool? enableAtCustomerAddress,
+        bool? isFavorite,
+        List<Speciality>? specialities,
+        List<Speciality>? subSpecialities,
+        Clinic? clinic,
+        String? sessionDuration,
         Address? address,}) {
     this.id = id;
     _clinic = clinic;
@@ -194,19 +194,19 @@ class Doctor extends Model {
   @override
   bool operator == (dynamic other) =>
       identical(this, other) ||
-      super == other &&
-          other is Doctor &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          description == other.description &&
-          rate == other.rate &&
-          available == other.available &&
-          isFavorite == other.isFavorite &&
-          specialities == other.specialities &&
-          subSpecialities == other.subSpecialities &&
-          user == other.user &&
-          clinic == other.clinic;
+          super == other &&
+              other is Doctor &&
+              runtimeType == other.runtimeType &&
+              id == other.id &&
+              name == other.name &&
+              description == other.description &&
+              rate == other.rate &&
+              available == other.available &&
+              isFavorite == other.isFavorite &&
+              specialities == other.specialities &&
+              subSpecialities == other.subSpecialities &&
+              user == other.user &&
+              clinic == other.clinic;
 
   @override
   int get hashCode =>
@@ -346,5 +346,6 @@ class Doctor extends Model {
 
   set sessionDuration(String? value) {
     sessionDuration = value;
+
   }
 }

@@ -330,12 +330,80 @@ class BookDoctorView extends GetView<BookDoctorController> {
                       print(controller.appointment.value.address?.address ?? "there is no address");
                       controller.toggleAtClinic(value);
                     },
-                    title: Text("Adresse de docteur".tr, style: controller.getTextTheme(controller.atClinic.value)).paddingSymmetric(vertical: 20),
+                    title: Text("At Clinic".tr, style: controller.getTextTheme(controller.atClinic.value)).paddingSymmetric(vertical: 20),
                   ),
                 ),
               );
             }),
-
+            Obx(() {
+              if (!controller.appointment.value.canAppointmentAtCustomerAddress) return SizedBox();
+              final ThemeData theme = ThemeData();
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: Ui.getBoxDecoration(color: controller.getColor(controller.atAddress.value)),
+                child: Theme(
+                  data: theme.copyWith(
+                    switchTheme: SwitchThemeData(
+                      thumbColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.disabled)) {
+                              return null;
+                            }
+                            if (states.contains(WidgetState.selected)) {
+                              return Get.theme.primaryColor;
+                            }
+                            return null;
+                          }),
+                      trackColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.disabled)) {
+                              return null;
+                            }
+                            if (states.contains(WidgetState.selected)) {
+                              return Get.theme.primaryColor;
+                            }
+                            return null;
+                          }),
+                    ),
+                    radioTheme: RadioThemeData(
+                      fillColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.disabled)) {
+                              return null;
+                            }
+                            if (states.contains(WidgetState.selected)) {
+                              return Get.theme.primaryColor;
+                            }
+                            return null;
+                          }),
+                    ),
+                    checkboxTheme: CheckboxThemeData(
+                      fillColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.disabled)) {
+                              return null;
+                            }
+                            if (states.contains(WidgetState.selected)) {
+                              return Get.theme.primaryColor;
+                            }
+                            return null;
+                          }),
+                    ),
+                  ),
+                  child: RadioListTile(
+                    value: true,
+                    groupValue: controller.atAddress.value,
+                    onChanged: (value) {
+                      controller.toggleAtAddress(value);
+                    },
+                    title: Text("At your address".tr,
+                        style: controller
+                            .getTextTheme(controller.atAddress.value))
+                        .paddingSymmetric(vertical: 20),
+                  ),
+                ),
+              );
+            }),
             Obx(() {
               return AnimatedOpacity(
                 opacity: controller.atAddress.value ? 1 : 0,
@@ -540,7 +608,12 @@ class BookDoctorView extends GetView<BookDoctorController> {
                                 controller.appointment.update((val) {
                                   val!.appointmentAt = DateTime.now().toLocal();
                                   val.startAt = DateTime.parse(id).toLocal();
-                                  val.endsAt = val.startAt!.add(Duration(minutes: int.parse(controller.appointment.value.doctor?.sessionDuration ?? '30')));
+
+                                  // Use the session duration dynamically
+                                  int sessionDuration = int.parse(controller.appointment.value.doctor?.sessionDuration ?? '15');
+
+                                  // Calculate the end time based on the session duration
+                                  val.endsAt = val.startAt!.add(Duration(minutes: sessionDuration));
                                 });
                               },
                             );
@@ -589,7 +662,12 @@ class BookDoctorView extends GetView<BookDoctorController> {
                                 controller.appointment.update((val) {
                                   val!.appointmentAt = DateTime.now().toLocal();
                                   val.startAt = DateTime.parse(id).toLocal();
-                                  val.endsAt = val.startAt!.add(Duration(minutes: int.parse(controller.appointment.value.doctor?.sessionDuration ?? '30')));
+
+                                  // Use the session duration dynamically
+                                  int sessionDuration = int.parse(controller.appointment.value.doctor?.sessionDuration ?? '15');
+
+                                  // Calculate the end time based on the session duration
+                                  val.endsAt = val.startAt!.add(Duration(minutes: sessionDuration));
                                 });
                               },
                             );
@@ -636,7 +714,12 @@ class BookDoctorView extends GetView<BookDoctorController> {
                               controller.appointment.update((val) {
                                 val!.appointmentAt = DateTime.now().toLocal();
                                 val.startAt = DateTime.parse(id).toLocal();
-                                val.endsAt = val.startAt!.add(Duration(minutes: int.parse(controller.appointment.value.doctor?.sessionDuration ?? '30')));
+
+                                // Use the session duration dynamically
+                                int sessionDuration = int.parse(controller.appointment.value.doctor?.sessionDuration ?? '15');
+
+                                // Calculate the end time based on the session duration
+                                val.endsAt = val.startAt!.add(Duration(minutes: sessionDuration));
                               });
                             },
                           );
@@ -661,31 +744,31 @@ class BookDoctorView extends GetView<BookDoctorController> {
               ),
             ),
 
-        Obx(() {
-          if (controller.patterns.isEmpty) {
-            return CircularProgressIndicator(); // Or some placeholder widget
-          } else {
-            return  DropDownList(
-              patterns: controller.patterns,
-              selectedPattern: controller.appointment.value.motif,
-              onPatternSelected: (newPattern) {
-                // Update the appointment's motif field in the controller
-                controller.selectPattern(newPattern);
+            Obx(() {
+              if (controller.patterns.isEmpty) {
+                return CircularProgressIndicator(); // Or some placeholder widget
+              } else {
+                return  DropDownList(
+                  patterns: controller.patterns,
+                  selectedPattern: controller.appointment.value.motif,
+                  onPatternSelected: (newPattern) {
+                    // Update the appointment's motif field in the controller
+                    controller.selectPattern(newPattern);
 
-                controller.appointment.update((appointment) {
-                  if (appointment != null) {
-                    appointment.motif = newPattern;
-                  }
-                  print(controller.appointment.value.motif);
-                });
+                    controller.appointment.update((appointment) {
+                      if (appointment != null) {
+                        appointment.motif = newPattern;
+                      }
+                      print(controller.appointment.value.motif);
+                    });
 
-              },
-            );
+                  },
+                );
 
-          }
-        }),
+              }
+            }),
 
-        TextFieldWidget(
+            TextFieldWidget(
               onChanged: (input) => controller.appointment.value.hint = input,
               hintText:
               "Is there anything else you would like us to know?".tr,
