@@ -95,7 +95,7 @@ class AuthController extends GetxController {
         print("password: " + password.value);
         print("passwordConfirmation: " + passwordConfirmation.value);
         _userRepository.resetPassword(currentUser.value.phoneNumber, password.value, passwordConfirmation.value);
-        Get.showSnackbar(Ui.SuccessSnackBar(message: "Password changed successfully"));
+        Get.showSnackbar(Ui.SuccessSnackBar(message: "Password changed successfully".tr));
 
       } catch (e) {
         Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));

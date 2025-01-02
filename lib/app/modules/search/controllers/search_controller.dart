@@ -25,8 +25,10 @@ class SearchController extends GetxController {
 
   @override
   void onInit() async {
-    await refreshSearch();
     super.onInit();
+    textEditingController.text = ""; // Initialize with default text
+    await getSpecialities(); // Ensure specialities are loaded before searching
+    await searchDoctors(keywords: textEditingController.text);
   }
 
   @override
