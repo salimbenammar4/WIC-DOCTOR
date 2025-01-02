@@ -13,6 +13,8 @@ import '../../../repositories/clinic_repository.dart';
 import '../../../services/settings_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
+import '../../../services/auth_service.dart';
+
 
 class MapsController extends GetxController {
   final clinics = <Clinic>[].obs;
@@ -20,11 +22,14 @@ class MapsController extends GetxController {
   final cameraPosition = CameraPosition(target: LatLng(0, 0)).obs;
   final mapController = Rx<GoogleMapController?>(null);
   late ClinicRepository _clinicRepository;
+  late AuthService _authService;
+
 
   // Add this property to keep track of the card position
   var cardPosition = Offset(0, 0).obs;
 
   MapsController() {
+    _authService = Get.find<AuthService>();
     _clinicRepository = ClinicRepository();
   }
 

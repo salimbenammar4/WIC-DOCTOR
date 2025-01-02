@@ -295,7 +295,7 @@ class AppointmentsListItemWidget extends StatelessWidget {
                                 ),
                                 SizedBox(width: 8), // Space between icon and text
                                 Text(
-                                  "Ouvrir dans Maps",
+                                  "Open in Maps".tr,
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ],

@@ -330,80 +330,12 @@ class BookDoctorView extends GetView<BookDoctorController> {
                       print(controller.appointment.value.address?.address ?? "there is no address");
                       controller.toggleAtClinic(value);
                     },
-                    title: Text("At Clinic".tr, style: controller.getTextTheme(controller.atClinic.value)).paddingSymmetric(vertical: 20),
+                    title: Text("At the office".tr, style: controller.getTextTheme(controller.atClinic.value)).paddingSymmetric(vertical: 20),
                   ),
                 ),
               );
             }),
-            Obx(() {
-              if (!controller.appointment.value.canAppointmentAtCustomerAddress) return SizedBox();
-              final ThemeData theme = ThemeData();
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                decoration: Ui.getBoxDecoration(color: controller.getColor(controller.atAddress.value)),
-                child: Theme(
-                  data: theme.copyWith(
-                    switchTheme: SwitchThemeData(
-                      thumbColor: WidgetStateProperty.resolveWith<Color?>(
-                              (Set<WidgetState> states) {
-                            if (states.contains(WidgetState.disabled)) {
-                              return null;
-                            }
-                            if (states.contains(WidgetState.selected)) {
-                              return Get.theme.primaryColor;
-                            }
-                            return null;
-                          }),
-                      trackColor: WidgetStateProperty.resolveWith<Color?>(
-                              (Set<WidgetState> states) {
-                            if (states.contains(WidgetState.disabled)) {
-                              return null;
-                            }
-                            if (states.contains(WidgetState.selected)) {
-                              return Get.theme.primaryColor;
-                            }
-                            return null;
-                          }),
-                    ),
-                    radioTheme: RadioThemeData(
-                      fillColor: WidgetStateProperty.resolveWith<Color?>(
-                              (Set<WidgetState> states) {
-                            if (states.contains(WidgetState.disabled)) {
-                              return null;
-                            }
-                            if (states.contains(WidgetState.selected)) {
-                              return Get.theme.primaryColor;
-                            }
-                            return null;
-                          }),
-                    ),
-                    checkboxTheme: CheckboxThemeData(
-                      fillColor: WidgetStateProperty.resolveWith<Color?>(
-                              (Set<WidgetState> states) {
-                            if (states.contains(WidgetState.disabled)) {
-                              return null;
-                            }
-                            if (states.contains(WidgetState.selected)) {
-                              return Get.theme.primaryColor;
-                            }
-                            return null;
-                          }),
-                    ),
-                  ),
-                  child: RadioListTile(
-                    value: true,
-                    groupValue: controller.atAddress.value,
-                    onChanged: (value) {
-                      controller.toggleAtAddress(value);
-                    },
-                    title: Text("At your address".tr,
-                        style: controller
-                            .getTextTheme(controller.atAddress.value))
-                        .paddingSymmetric(vertical: 20),
-                  ),
-                ),
-              );
-            }),
+
             Obx(() {
               return AnimatedOpacity(
                 opacity: controller.atAddress.value ? 1 : 0,

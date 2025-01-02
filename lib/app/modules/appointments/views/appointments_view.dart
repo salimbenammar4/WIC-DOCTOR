@@ -48,21 +48,21 @@ class AppointmentsView extends GetView<AppointmentsController> {
                   bottom: controller.appointmentStatuses.isEmpty
                       ? TabBarLoadingWidget()
                       : TabBarWidget(
-                          tag: 'appointments',
-                          initialSelectedId: controller.appointmentStatuses.reversed.elementAt(0).id,
-                          tabs: List.generate(controller.appointmentStatuses.length, (index) {
-                            var _status = controller.appointmentStatuses.reversed.elementAt(index);
-                            return ChipWidget(
-                              tag: 'appointments',
-                              text: _status.status,
-                              id: _status.id,
-                              onSelected: (id) {
-                                controller.changeTab(id);
-                              },
+                    tag: 'appointments',
+                    initialSelectedId: controller.appointmentStatuses.reversed.elementAt(0).id,
+                    tabs: List.generate(controller.appointmentStatuses.length, (index) {
+                      var _status = controller.appointmentStatuses.reversed.elementAt(index);
+                      return ChipWidget(
+                        tag: 'appointments',
+                        text: _status.status.tr,
+                        id: _status.id.tr,
+                        onSelected: (id) {
+                          controller.changeTab(id);
+                        },
 
-                            );
-                          }),
-                        ),
+                      );
+                    }),
+                  ),
                 );
               }),
               SliverToBoxAdapter(

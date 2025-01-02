@@ -21,8 +21,8 @@ class DeletePatientWidget extends GetView<PatientFormController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Delete this patient!", style: Get.textTheme.bodyMedium?.merge(TextStyle(color: Colors.redAccent))),
-                Text("Once you delete this patient, there is no going back. Please be certain.", style: Get.textTheme.bodySmall?.merge(TextStyle(color: Colors.redAccent))),
+                Text("Delete this patient!".tr, style: Get.textTheme.bodyMedium?.merge(TextStyle(color: Colors.redAccent))),
+                Text("Once you delete this patient, there is no going back. Please be certain.".tr, style: Get.textTheme.bodySmall?.merge(TextStyle(color: Colors.redAccent))),
               ],
             ),
           ),
