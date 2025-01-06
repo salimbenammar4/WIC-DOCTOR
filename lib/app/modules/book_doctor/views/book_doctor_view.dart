@@ -680,7 +680,7 @@ class BookDoctorView extends GetView<BookDoctorController> {
               if (controller.patterns.isEmpty) {
                 return CircularProgressIndicator(); // Or some placeholder widget
               } else {
-                return  DropDownList(
+                return DropDownList(
                   patterns: controller.patterns,
                   selectedPattern: controller.appointment.value.motif,
                   onPatternSelected: (newPattern) {
@@ -693,10 +693,8 @@ class BookDoctorView extends GetView<BookDoctorController> {
                       }
                       print(controller.appointment.value.motif);
                     });
-
                   },
                 );
-
               }
             }),
 
@@ -739,9 +737,10 @@ class BookDoctorView extends GetView<BookDoctorController> {
         borderRadius: BorderRadius.all(Radius.circular(20)),
         boxShadow: [
           BoxShadow(
-              color: Get.theme.focusColor.withOpacity(0.1),
-              blurRadius: 10,
-              offset: Offset(0, -5)),
+            color: Get.theme.focusColor.withOpacity(0.1),
+            blurRadius: 10,
+            offset: Offset(0, -5),
+          ),
         ],
       ),
       child: Obx(() {
@@ -754,24 +753,24 @@ class BookDoctorView extends GetView<BookDoctorController> {
                 child: Text(
                   "Continue".tr,
                   textAlign: TextAlign.center,
-                  style: Get.textTheme.titleLarge?.merge(TextStyle(color: Get.theme.primaryColor),
-                  ),
+                  style: Get.textTheme.titleLarge?.merge(TextStyle(color: Get.theme.primaryColor)),
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, color: Get.theme.primaryColor, size: 20)
+              Icon(Icons.arrow_forward_ios, color: Get.theme.primaryColor, size: 20),
             ],
           ),
           color: Get.theme.colorScheme.secondary,
-          onPressed: (
-              controller.appointment.value.appointmentAt != null
-                  && (controller.appointment.value.address != null || controller.appointment.value.canAppointmentAtClinic)
-                  && Get.isRegistered<TabBarController>(tag: 'hours') && Get.find<TabBarController>(tag: 'hours').initialized
-                  && Get.find<TabBarController>(tag: 'hours').selectedId.value != "")
-              && (controller.appointment.value.patient != null && controller.appointment.value.patient!.hasData)&&(controller.appointment.value.motif?.id!=null)
+          onPressed: controller.appointment.value.motif != null &&
+              controller.appointment.value.appointmentAt != null &&
+              (controller.appointment.value.address != null || controller.appointment.value.canAppointmentAtClinic) &&
+              Get.isRegistered<TabBarController>(tag: 'hours') &&
+              Get.find<TabBarController>(tag: 'hours').initialized &&
+              Get.find<TabBarController>(tag: 'hours').selectedId.value != "" &&
+              (controller.appointment.value.patient != null && controller.appointment.value.patient!.hasData)
               ? () async {
             await Get.toNamed(Routes.APPOINTMENT_SUMMARY);
           }
-              : null,
+              : null, // Button disabled when motif is null or conditions aren't met
         ).paddingOnly(right: 20, left: 20);
       }),
     );

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../../main.dart';
 import '../models/user_model.dart';
 import '../providers/firebase_provider.dart';
 import '../providers/laravel_provider.dart';
@@ -45,9 +46,18 @@ class UserRepository {
     GetStorage().remove('current_user');
   }
 
-  Future<User> register(User user) {
+  Future<User> register(User user) async {
     _laravelApiClient = Get.find<LaravelApiClient>();
-    return _laravelApiClient.register(user);
+
+    // Get device token
+    String? deviceToken = await setDeviceToken();
+
+    if (deviceToken != null) {
+      // Call the register method with both user and deviceToken
+      return _laravelApiClient.register(user, deviceToken);
+    } else {
+      throw Exception('Failed to retrieve device token');
+    }
   }
 
   Future<void> resetPassword(String phoneNumber, String newPassword, String passwordConfirmation) {

@@ -208,7 +208,10 @@ class User extends Model {
     data['email'] = this.email;
     if (_password != null && _password != '') {
       data['password'] = this.password;
+      data['passwordpatient'] = this.password;
+
     }
+
     data['api_token'] = this._apiToken;
     if (_deviceToken != null) {
       data["device_token"] = deviceToken;

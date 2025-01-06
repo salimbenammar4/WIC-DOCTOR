@@ -18,6 +18,7 @@ class FireBaseMessagingService extends GetxService {
     await fcmOnResumeListeners();
     await fcmOnMessageListeners();
     return this;
+
   }
 
   Future fcmOnMessageListeners() async {

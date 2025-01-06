@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../common/ui.dart';
+import '../../../../main.dart';
 import '../../../models/user_model.dart';
 import '../../../repositories/user_repository.dart';
 import '../../../routes/app_routes.dart';
@@ -39,9 +40,17 @@ class AuthController extends GetxController {
       loginFormKey.currentState!.save();
       loading.value = true;
       try {
-        await Get.find<FireBaseMessagingService>().setDeviceToken();
+        // Call setDeviceToken() and retrieve the token
+        String? deviceToken = await setDeviceToken(); // Call the function from main.dart
+        currentUser.value.deviceToken = deviceToken;  // Set the token to currentUser
+
+        // Perform login with the device token
         currentUser.value = await _userRepository.login(currentUser.value);
+
+        // Call the sign-in method
         await _userRepository.signInWithEmailAndPassword(currentUser.value.email, currentUser.value.apiToken);
+
+        // Navigate to the main page after successful login
         await Get.find<RootController>().changePage(0);
       } catch (e) {
         Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));

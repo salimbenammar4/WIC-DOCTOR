@@ -71,6 +71,7 @@ class NotificationsView extends GetView<NotificationsController> {
                   notification: _notification,
                   onDismissed: (notification) {
                     controller.removeNotification(notification);
+
                   },
                   onTap: (notification) async {
                     await controller.markAsReadNotification(notification);

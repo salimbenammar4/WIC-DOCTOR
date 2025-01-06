@@ -69,15 +69,19 @@ void main() async {
     ),
   );
 }
-Future<void> setDeviceToken() async {
+
+Future<String?> setDeviceToken() async {
   final _firebaseMessaging = FirebaseMessaging.instance;
   final fCMToken = await _firebaseMessaging.getToken();
   if (fCMToken != null) {
     print('Token: $fCMToken');
+    return fCMToken;
   } else {
     print('Failed to retrieve FCM token');
   }
+  return fCMToken;// Return the token
 }
+
 
 class PlayIntegrityService {
   static const platform = MethodChannel('com.wic_doc/play_integrity');

@@ -35,16 +35,16 @@ class NotificationsController extends GetxController {
     }
   }
 
-  Future removeNotification(Notification notification) async {
-    try {
-      await _notificationRepository.remove(notification);
-      if (!notification.read) {
-        --Get.find<RootController>().notificationsCount.value;
-      }
+  Future<void> removeNotification(Notification notification) async {
+
       notifications.remove(notification);
-    } catch (e) {
-      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
-    }
+      // Call the repository to remove the notification from the backend
+      await _notificationRepository.remove(notification);
+
+      // Update notification count if the notification is unread
+      if (!notification.read) {
+        Get.find<RootController>().notificationsCount.value;
+      }
   }
 
   Future markAsReadNotification(Notification notification) async {

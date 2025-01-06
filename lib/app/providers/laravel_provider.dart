@@ -79,11 +79,14 @@ class LaravelApiClient extends GetxService with ApiClient {
   Future<User> login(User user) async {
     Uri _uri = getApiBaseUri("login");
     Get.log(_uri.toString());
+
+    // Make sure the device_token is passed
     var response = await httpClient.postUri(
       _uri,
-      data: json.encode(user.toJson()),
+      data: json.encode(user.toJson()), // This includes device_token
       options: optionsNetwork,
     );
+
     if (response.data['success'] == true) {
       response.data['data']['auth'] = true;
       return User.fromJson(response.data['data']);
@@ -92,14 +95,19 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  Future<User> register(User user) async {
+  Future<User> register(User user, String deviceToken) async {
     Uri _uri = getApiBaseUri("register");
     Get.log(_uri.toString());
+
+    // Add deviceToken to the user before sending
+    user.deviceToken = deviceToken;
+
     var response = await httpClient.postUri(
       _uri,
-      data: json.encode(user.toJson()),
+      data: json.encode(user.toJson()), // Ensure toJson includes deviceToken
       options: optionsNetwork,
     );
+
     if (response.data['success'] == true) {
       response.data['data']['auth'] = true;
       return User.fromJson(response.data['data']);
