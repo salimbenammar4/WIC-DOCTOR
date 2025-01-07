@@ -21,8 +21,8 @@ class DeleteAccountWidget extends GetView<ProfileController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Delete your account!", style: Get.textTheme.bodyMedium?.merge(TextStyle(color: Colors.redAccent))),
-                Text("Once you delete this account, there is no going back. Please be certain.", style: Get.textTheme.bodySmall?.merge(TextStyle(color: Colors.redAccent))),
+                Text("Delete your account!".tr, style: Get.textTheme.bodyMedium?.merge(TextStyle(color: Colors.redAccent))),
+                Text("Once you delete this account, there is no going back. Please be certain.".tr, style: Get.textTheme.bodySmall?.merge(TextStyle(color: Colors.redAccent))),
               ],
             ),
           ),

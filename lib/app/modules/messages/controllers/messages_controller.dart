@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MessagesController extends GetxController {
   ScrollController scrollController = ScrollController();
   final chatTextController = TextEditingController();
   var isMessageEmpty = true.obs;
+  StreamSubscription? _messageStreamSubscription;
 
   MessagesController() {
     _chatRepository = ChatRepository();
@@ -46,7 +48,9 @@ class MessagesController extends GetxController {
 
   @override
   void onClose() {
+    super.onClose();
     chatTextController.dispose();
+    _messageStreamSubscription?.cancel();
   }
 
   Future createMessage(Message _message) async {
@@ -106,7 +110,7 @@ class MessagesController extends GetxController {
     });
   }
 
-  void addMessage(Message _message, String text) {
+  void addMessage(Message _message, String text, {String? fileUrl}) {
     Chat _chat = Chat(text, DateTime.now().millisecondsSinceEpoch, _authService.user.value.id, _authService.user.value);
 
     if (!_message.hasData) {
@@ -118,6 +122,11 @@ class MessagesController extends GetxController {
     _message.lastMessageTime = _chat.time;
     _message.readByUsers = [_authService.user.value.id];
     uploading.value = false;
+
+    // If there is a file URL, you can add it to the message
+    if (fileUrl != null) {
+      _message.fileUrl = fileUrl; // Assuming you add fileUrl to the Message class
+    }
 
     _chatRepository.addMessage(_message, _chat).then((value) {
       List<User> _users = List.from(_message.users);
@@ -155,4 +164,6 @@ class MessagesController extends GetxController {
       Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select an image file".tr));
     }
   }
+
+
 }
