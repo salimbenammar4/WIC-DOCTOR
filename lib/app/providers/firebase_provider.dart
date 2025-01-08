@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../common/ui.dart';
 import '../services/auth_service.dart';
 
 class FirebaseProvider extends GetxService {

@@ -57,29 +57,9 @@ class Message extends Model {
     _users = value;
   }
 
-  // Type of message (text or file)
-  String? _type;
-
-  String get type => _type ?? 'text'; // default is text
-
-  set type(String? value) {
-    _type = value;
-  }
-
-  // URL of the file if it's a file message
-  String? _fileUrl;
-
-  String? get fileUrl => _fileUrl;
-
-  set fileUrl(String? value) {
-    _fileUrl = value;
-  }
-
-  Message(this._users, {String? id = null, String? name = '', String? type = 'text', String? fileUrl}) {
+  Message(this._users, {String? id = null, String? name = ''}) {
     this.id = id;
     _name = name;
-    _type = type ?? 'text'; // Default to text
-    _fileUrl = fileUrl;
     visibleToUsers = this.users.map((user) => user.id).toList();
     readByUsers = [];
   }
@@ -92,8 +72,6 @@ class Message extends Model {
       _visibleToUsers = jsonMap.get('visible_to_users') != null ? List.from(jsonMap.get('visible_to_users')) : [];
       _lastMessage = jsonMap.get('message') != null ? jsonMap.get('message').toString() : '';
       _lastMessageTime = jsonMap.get('time') != null ? jsonMap.get('time') : 0;
-      _type = jsonMap.get('type') ?? 'text'; // Default to text if type is not available
-      _fileUrl = jsonMap.get('fileUrl'); // Get file URL if available
       _users = jsonMap.get('users') != null
           ? List.from(jsonMap.get('users')).map((element) {
         element['media'] = [
@@ -109,8 +87,6 @@ class Message extends Model {
       _users = [];
       _lastMessage = '';
       _lastMessageTime = 0;
-      _type = 'text';
-      _fileUrl = null;
     }
   }
 
@@ -124,10 +100,6 @@ class Message extends Model {
     map["read_by_users"] = readByUsers;
     map["message"] = lastMessage;
     map["time"] = lastMessageTime;
-    map["type"] = type; // Include the type in the JSON
-    if (_fileUrl != null) {
-      map["fileUrl"] = _fileUrl; // Add fileUrl only if it's available
-    }
     return map;
   }
 
@@ -136,10 +108,6 @@ class Message extends Model {
     map["message"] = lastMessage;
     map["time"] = lastMessageTime;
     map["read_by_users"] = readByUsers;
-    map["type"] = type; // Include type in the updated map
-    if (_fileUrl != null) {
-      map["fileUrl"] = _fileUrl; // Add fileUrl if present
-    }
     return map;
   }
 
@@ -155,11 +123,9 @@ class Message extends Model {
               lastMessageTime == other.lastMessageTime &&
               readByUsers == other.readByUsers &&
               visibleToUsers == other.visibleToUsers &&
-              users == other.users &&
-              type == other.type &&
-              fileUrl == other.fileUrl;
+              users == other.users;
 
   @override
   int get hashCode =>
-      super.hashCode ^ id.hashCode ^ name.hashCode ^ lastMessage.hashCode ^ lastMessageTime.hashCode ^ readByUsers.hashCode ^ visibleToUsers.hashCode ^ users.hashCode ^ type.hashCode ^ fileUrl.hashCode;
+      super.hashCode ^ id.hashCode ^ name.hashCode ^ lastMessage.hashCode ^ lastMessageTime.hashCode ^ readByUsers.hashCode ^ visibleToUsers.hashCode ^ users.hashCode;
 }

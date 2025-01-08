@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../../../common/ui.dart';
 import '../../../models/chat_model.dart';
 import '../../../models/media_model.dart';
 import '../../../models/message_model.dart';
@@ -13,6 +12,8 @@ import '../../../models/user_model.dart';
 import '../../global_widgets/circular_loading_widget.dart';
 import '../controllers/messages_controller.dart';
 import '../widgets/chat_message_item_widget.dart';
+
+// ignore: must_be_immutable
 class ChatsView extends GetView<MessagesController> {
   final _myListKey = GlobalKey<AnimatedListState>();
 
@@ -106,7 +107,7 @@ class ChatsView extends GetView<MessagesController> {
                     IconButton(
                       padding: EdgeInsets.zero,
                       onPressed: () async {
-                        var imageUrl = await controller.getImage(ImageSource.gallery);
+                        var imageUrl = await controller.getImage(ImageSource.gallery, controller.message.value);
                         if (imageUrl != null && imageUrl.trim() != '') {
                           controller.addMessage(controller.message.value, imageUrl); // Remove 'await'
                         }
@@ -123,28 +124,7 @@ class ChatsView extends GetView<MessagesController> {
                     IconButton(
                       padding: EdgeInsets.zero,
                       onPressed: () async {
-                        FilePickerResult? result = await FilePicker.platform.pickFiles();
-                        if (result != null && result.files.isNotEmpty) {
-                          String? filePath = result.files.single.path;
-                          if (filePath != null) {
-                            // Upload the file to Firebase Storage
-                            String fileUrl = await uploadFile(filePath);
-
-                            // Add the message with the file URL
-                            controller.addMessage(controller.message.value, "File message", fileUrl: fileUrl);
-                          }
-                        }
-                      },
-                      icon: Icon(
-                        Icons.attach_file_outlined,
-                        color: Get.theme.colorScheme.secondary,
-                        size: 30,
-                      ),
-                    ),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () async {
-                        var imageUrl = await controller.getImage(ImageSource.camera);
+                        var imageUrl = await controller.getImage(ImageSource.camera, controller.message.value);
                         if (imageUrl != null && imageUrl.trim() != '') {
                           controller.addMessage(controller.message.value, imageUrl); // Remove 'await'
                         }
@@ -158,6 +138,25 @@ class ChatsView extends GetView<MessagesController> {
                         size: 30,
                       ),
                     ),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () async {
+                        try {
+                          await controller.pickAndUploadFile(controller.message.value);
+                        } catch (e) {
+                          Get.showSnackbar(Ui.ErrorSnackBar(message: "Failed to upload file. Please try again."));
+                        }
+                        Timer(Duration(milliseconds: 100), () {
+                          controller.chatTextController.clear();
+                        });
+                      },
+                      icon: Icon(
+                        Icons.attach_file_outlined,
+                        color: Get.theme.colorScheme.secondary,
+                        size: 30,
+                      ),
+                    ),
+
                   ],
                 ),
                 Expanded(
@@ -169,7 +168,7 @@ class ChatsView extends GetView<MessagesController> {
                     style: Get.textTheme.bodyLarge,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(20),
-                      hintText: "Type to start chat".tr,
+                      hintText: "Start chatting!".tr,
                       hintStyle: TextStyle(color: Get.theme.focusColor.withOpacity(0.8)),
                       suffixIcon: Obx(() => IconButton(
                         padding: EdgeInsetsDirectional.only(end: 20, start: 10),
@@ -202,27 +201,5 @@ class ChatsView extends GetView<MessagesController> {
         ],
       ),
     );
-  }
-
-  Future<String> uploadFile(String filePath) async {
-    try {
-      // Create a reference to Firebase Storage
-      final fileName = filePath
-          .split('/')
-          .last;
-      final storageRef = FirebaseStorage.instance.ref().child(
-          'uploads/$fileName');
-
-      // Upload the file to Firebase Storage
-      await storageRef.putFile(File(filePath));
-
-      // Get the download URL of the uploaded file
-      String downloadUrl = await storageRef.getDownloadURL();
-
-      return downloadUrl;
-    } catch (e) {
-      print("Error uploading file: $e");
-      return '';
-    }
   }
 }

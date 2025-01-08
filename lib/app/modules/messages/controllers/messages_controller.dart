@@ -1,7 +1,9 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../common/ui.dart';
@@ -27,7 +29,6 @@ class MessagesController extends GetxController {
   ScrollController scrollController = ScrollController();
   final chatTextController = TextEditingController();
   var isMessageEmpty = true.obs;
-  StreamSubscription? _messageStreamSubscription;
 
   MessagesController() {
     _chatRepository = ChatRepository();
@@ -48,9 +49,7 @@ class MessagesController extends GetxController {
 
   @override
   void onClose() {
-    super.onClose();
     chatTextController.dispose();
-    _messageStreamSubscription?.cancel();
   }
 
   Future createMessage(Message _message) async {
@@ -110,7 +109,7 @@ class MessagesController extends GetxController {
     });
   }
 
-  void addMessage(Message _message, String text, {String? fileUrl}) {
+  void addMessage(Message _message, String text) {
     Chat _chat = Chat(text, DateTime.now().millisecondsSinceEpoch, _authService.user.value.id, _authService.user.value);
 
     if (!_message.hasData) {
@@ -122,11 +121,6 @@ class MessagesController extends GetxController {
     _message.lastMessageTime = _chat.time;
     _message.readByUsers = [_authService.user.value.id];
     uploading.value = false;
-
-    // If there is a file URL, you can add it to the message
-    if (fileUrl != null) {
-      _message.fileUrl = fileUrl; // Assuming you add fileUrl to the Message class
-    }
 
     _chatRepository.addMessage(_message, _chat).then((value) {
       List<User> _users = List.from(_message.users);
@@ -144,17 +138,53 @@ class MessagesController extends GetxController {
     });
   }
 
-  Future getImage(ImageSource source) async {
+  Future getImage(ImageSource source, Message _message) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? pickedFile;
 
+    // Picking the image
     pickedFile = await imagePicker.pickImage(source: source);
     imageFile = pickedFile != null ? File(pickedFile.path) : null;
 
+    // If an image is selected
     if (imageFile != null) {
       try {
         uploading.value = true;
-        await _chatRepository.uploadFile(imageFile!);
+
+        // Step 1: Upload the image and get the download URL
+        String fileUrl = await _chatRepository.uploadFile(imageFile!);
+
+        // Step 2: Create a Chat object for the image
+        Chat _chat = Chat(fileUrl, DateTime.now().millisecondsSinceEpoch, _authService.user.value.id, _authService.user.value);
+
+        // Step 3: Set the image URL as the last message text in _message
+        _message.lastMessage = fileUrl;  // Set the image URL in the message
+        _message.users.insert(0, _authService.user.value);  // Insert the current user at the start
+        _message.lastMessageTime = _chat.time;  // Update the last message time
+        _message.readByUsers = [_authService.user.value.id];  // Mark it as read by the current user
+
+        message.value = _message;  // Update the message value
+
+        // Step 4: Save the message to Firestore
+        await _chatRepository.createMessage(_message);
+
+        // Step 5: Add the message with the chat to Firestore
+        await _chatRepository.addMessage(_message, _chat);
+
+        // Step 6: Send notifications (if necessary)
+        List<User> _users = List.from(_message.users);
+        _users.removeWhere((element) => element.id == _authService.user.value.id);
+        _notificationRepository.sendNotification(
+          _users,
+          _authService.user.value,
+          "App\\Notifications\\NewMessage",
+          fileUrl, // The file URL as the notification message
+          _message.id,
+        );
+
+        // Step 7: Refresh messages after sending
+        refreshMessages();
+
       } catch (e) {
         Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
       } finally {
@@ -164,6 +194,63 @@ class MessagesController extends GetxController {
       Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select an image file".tr));
     }
   }
+
+  Future<void> pickAndUploadFile(Message _message) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null && result.files.single.path != null) {
+      File selectedFile = File(result.files.single.path!);
+
+      try {
+        uploading.value = true;
+
+        // Step 1: Upload the file and get the download URL
+        String fileUrl = await _chatRepository.uploadFile(selectedFile);
+
+        // Step 2: Create a Chat object for the file attachment
+        Chat _chat = Chat(
+            fileUrl,
+            DateTime.now().millisecondsSinceEpoch,
+            _authService.user.value.id,
+            _authService.user.value
+        );
+
+        // Step 3: Update the message object
+        _message.lastMessage = "File: ${result.files.single.name}";  // Display file name as the message
+        _message.users.insert(0, _authService.user.value);  // Add the current user
+        _message.lastMessageTime = _chat.time;
+        _message.readByUsers = [_authService.user.value.id];
+
+        message.value = _message;
+
+        // Step 4: Save the message and chat to Firestore
+        await _chatRepository.createMessage(_message);
+        await _chatRepository.addMessage(_message, _chat);
+
+        // Step 5: Send a notification to other users
+        List<User> _users = List.from(_message.users);
+        _users.removeWhere((element) => element.id == _authService.user.value.id);
+        _notificationRepository.sendNotification(
+          _users,
+          _authService.user.value,
+          "App\\Notifications\\NewMessage",
+          "File: ${result.files.single.name}",
+          _message.id,
+        );
+
+        // Step 6: Refresh the chat messages
+        refreshMessages();
+
+      } catch (e) {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      } finally {
+        uploading.value = false;
+      }
+    } else {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select a file".tr));
+    }
+  }
+
 
 
 }

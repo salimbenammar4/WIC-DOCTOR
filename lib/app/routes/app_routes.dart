@@ -51,4 +51,5 @@ class Routes {
   static const WALLET_FORM = '/wallet_form';
   static const OTP_VERIFICATION='/new_password';
   static const PASS_RESET='/password_reset';
+
 }
