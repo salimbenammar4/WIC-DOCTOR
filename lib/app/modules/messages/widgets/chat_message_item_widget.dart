@@ -449,7 +449,7 @@ class ChatMessageItem extends StatelessWidget {
                             SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                fileName,
+                                fileName + ".pdf",
                                 style: Get.textTheme.bodyMedium,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -466,6 +466,18 @@ class ChatMessageItem extends StatelessWidget {
                   height: 42,
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(42)),
+                    child: CachedNetworkImage(
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      imageUrl: chat.user.avatar.thumb,
+                      placeholder: (context, url) => Image.asset(
+                        'assets/img/loading.gif',
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
+                      errorWidget: (context, url, error) =>
+                          Icon(Icons.error_outline),
+                    ),
                   ),
                 ),
               ],
@@ -488,6 +500,7 @@ class ChatMessageItem extends StatelessWidget {
 
   Widget getReceivedMessageFileLayout(BuildContext context) {
     String fileName = chat.text.split('/').last; // Extract file name from URL
+
     return Align(
       alignment: Alignment.centerLeft,
       child: Column(
@@ -551,6 +564,17 @@ class ChatMessageItem extends StatelessWidget {
                   height: 42,
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(42)),
+                    child: CachedNetworkImage(
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      imageUrl: chat.user.avatar.thumb,
+                      placeholder: (context, url) => Image.asset(
+                        'assets/img/loading.gif',
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error_outline),
+                    ),
                   ),
                 ),
               ],
