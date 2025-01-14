@@ -278,7 +278,7 @@ class MainDrawerWidget extends StatelessWidget {
           ),
           DrawerLinkWidget(
             icon: Icons.brightness_6_outlined,
-            text: Get.isDarkMode ? "Light Theme" : "Dark Theme",
+            text: "Application theme",
             onTap: (e) async {
               await Get.offAndToNamed(Routes.SETTINGS_THEME_MODE);
             },

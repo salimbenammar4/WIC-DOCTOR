@@ -62,22 +62,19 @@ class PatientsListItemWidget extends StatelessWidget {
                               _patient.first_name ?? '',
                               style: Get.textTheme.bodyMedium,
                               maxLines: 3,
-                              // textAlign: TextAlign.end,
                             ),
-                            SizedBox(width: 3,),
+                            SizedBox(width: 3),
                             Text(
                               _patient.last_name ?? '',
                               style: Get.textTheme.bodyMedium,
                               maxLines: 3,
-                              // textAlign: TextAlign.end,
                             ),
                           ],
                         ),
-
                       ),
                     ],
                   ),
-                  Divider(height: 2, thickness: 1, color: Get.theme.dividerColor,),
+                  Divider(height: 2, thickness: 1, color: Get.theme.dividerColor),
                   Row(
                     children: [
                       Icon(
@@ -85,58 +82,26 @@ class PatientsListItemWidget extends StatelessWidget {
                         size: 18,
                         color: Get.theme.focusColor,
                       ),
-                      SizedBox(width: 1),
+                      SizedBox(width: 5),
                       Flexible(
                         child: Text(
-                          _patient.getAge(_patient.date_naissance).toString(),
+                          _patient.getAge(_patient.date_naissance).toString()+" years old".tr,
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,
                           style: Get.textTheme.bodyLarge,
                         ),
                       ),
-                      SizedBox(width: 5),
+                      SizedBox(width: 10),
                       Icon(
-                        Icons.male_rounded ,
+                        Icons.male_rounded,
                         size: 18,
                         color: Get.theme.focusColor,
                       ),
-                      SizedBox(width: 1),
-                      Flexible(
-                        child: Text(
-                          _patient.gender,
-                          maxLines: 1,
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          style: Get.textTheme.bodyLarge,
-                        ),
-                      ),
                       SizedBox(width: 5),
-                      Icon(
-                        Icons.monitor_weight_outlined,
-                        size: 18,
-                        color: Get.theme.focusColor,
-                      ),
-                      SizedBox(width: 1),
                       Flexible(
                         child: Text(
-                          _patient.weight +'(KG)' ,
-                          maxLines: 1,
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          style: Get.textTheme.bodyLarge,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Icon(
-                        Icons.height,
-                        size: 18,
-                        color: Get.theme.focusColor,
-                      ),
-                      SizedBox(width: 1),
-                      Flexible(
-                        child: Text(
-                          _patient.height+'(CM)',
+                          _patient.gender.tr,
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,
@@ -145,14 +110,34 @@ class PatientsListItemWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Divider(height: 2, thickness: 1, color: Get.theme.dividerColor,),
+                  Divider(height: 2, thickness: 1, color: Get.theme.dividerColor),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        flex: 1,
+                      Icon(
+                        Icons.monitor_weight_outlined,
+                        size: 18,
+                        color: Get.theme.focusColor,
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
                         child: Text(
-                          "Rendez-vous totales ".tr+"("+_patient.total_appointments.toString()+")",
+                          _patient.weight + '(KG)',
+                          maxLines: 1,
+                          overflow: TextOverflow.fade,
+                          softWrap: false,
+                          style: Get.textTheme.bodyLarge,
+                        ),
+                      ),
+                      SizedBox(width: 5), // Space between weight and height
+                      Icon(
+                        Icons.height,
+                        size: 18,
+                        color: Get.theme.focusColor,
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: Text(
+                          _patient.height + '(CM)',
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,

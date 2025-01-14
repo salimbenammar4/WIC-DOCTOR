@@ -97,14 +97,7 @@ class PatientView extends GetView<PatientController> {
                           horizontalPadding: 0,
                           title: Text("Recent Doctors".tr, style: Get.textTheme.titleSmall).paddingSymmetric(horizontal: 20),
                           content: FeaturedCarouselWidget(),
-                          actions: [
-                            InkWell(
-                              onTap: () {
-                                //Get.toNamed(Routes.CLINIC_DOCTORS, arguments: _clinic);
-                              },
-                              child: Text("View All".tr, style: Get.textTheme.titleMedium),
-                            ).paddingSymmetric(horizontal: 20),
-                          ],
+
                         ),
                       ],
                     ),
@@ -256,7 +249,7 @@ class PatientView extends GetView<PatientController> {
                 SizedBox(width: 1),
                 Flexible(
                   child: Text(
-                    _patient.gender,
+                    _patient.gender.tr,
                     maxLines: 1,
                     overflow: TextOverflow.fade,
                     softWrap: false,

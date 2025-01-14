@@ -25,7 +25,7 @@ class BookDoctorView extends GetView<BookDoctorController> {
 
           Get.find<LaravelApiClient>().forceRefresh();
           controller.refreshPatients();
-
+          controller.getTimes(date:controller.selectedDate);
           Get.find<LaravelApiClient>().unForceRefresh();
         }
         print("patternaaaaaaaaaaaaaaaaaaaaaaa");

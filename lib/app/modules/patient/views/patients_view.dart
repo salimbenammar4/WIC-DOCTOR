@@ -5,12 +5,13 @@ import '../../../routes/app_routes.dart';
 import '../../global_widgets/notifications_button_widget.dart';
 import '../controllers/patients_controller.dart';
 import '../widgets/patients_list_widget.dart';
-
+import '../controllers/patient_controller.dart';
 class PatientsView extends GetView<PatientsController> {
   PatientsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: RefreshIndicator(
           onRefresh: () async {
@@ -47,7 +48,7 @@ class PatientsView extends GetView<PatientsController> {
                   alignment: WrapAlignment.start,
                   children: [
                     Text("Patients".tr, style: Get.textTheme.headlineSmall).paddingOnly(top: 25, bottom: 0, right: 22, left: 22),
-                    Text("Ce sont tous les patients attribués à votre compte, vous pouvez en créer de nouveaux en utilisant le bouton Ajouter ci-dessous".tr, style: Get.textTheme.bodySmall).paddingSymmetric(horizontal: 22, vertical: 5,),
+                    Text("These are all patients assigned to your account, you can create new ones using the Add button below".tr, style: Get.textTheme.bodySmall).paddingSymmetric(horizontal: 22, vertical: 5,),
                     PatientsListWidget(),
                   ],
                 ),

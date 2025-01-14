@@ -37,6 +37,7 @@ class BookDoctorController extends GetxController {
   final afternoonTimes = [].obs;
   final eveningTimes = [].obs;
   final nightTimes = [].obs;
+  var selectedDate=DateTime.now();
   DatePickerController datePickerController = DatePickerController();
   late AppointmentRepository _appointmentRepository;
   late PatientRepository _patientRepository;
@@ -76,7 +77,7 @@ class BookDoctorController extends GetxController {
     this.patients.clear();
     await getPatients();
     await getPattern();
-    getTimes();
+    getTimes(date: this.selectedDate);
     if (showMessage) {
       Get.showSnackbar(Ui.SuccessSnackBar(message: "Page actualisée avec succées".tr));
     }
@@ -89,6 +90,7 @@ class BookDoctorController extends GetxController {
     appointment.update((val) {
       val?.online = false;
     });
+    getTimes(date: this.selectedDate);
   }
 
   void toggleAtAddress(value) {
@@ -106,7 +108,8 @@ class BookDoctorController extends GetxController {
     });
     atClinic.value = false;
     atAddress.value = false;
-    onlineConsultation.value = value;
+    onlineConsultation.value = true;
+    getTimes(date: this.selectedDate);
   }
 
 
@@ -173,7 +176,11 @@ class BookDoctorController extends GetxController {
       morningTimes.clear();
       afternoonTimes.clear();
       eveningTimes.clear();
-      List<dynamic> times = await _doctorRepository.getAvailabilityHours(this.appointment.value.doctor!.id, date ?? DateTime.now());
+      Get.log("aaaaaaaaaaaaaaaaaaaaaaaaaaassssssssss");
+      if (date != null){
+        this.selectedDate = date;
+      }
+      List<dynamic> times = await _doctorRepository.getAvailabilityHours(this.appointment.value.doctor!.id, date ?? DateTime.now(), this.appointment.value.online);
       for (var timeEntry in times) {
         final dateTime = DateTime.parse(timeEntry.elementAt(0)).toLocal();
         final hour = dateTime.hour;

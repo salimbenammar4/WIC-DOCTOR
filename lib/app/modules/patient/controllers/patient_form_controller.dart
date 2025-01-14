@@ -12,8 +12,8 @@ class PatientFormController extends GetxController {
   final patient = Patient().obs;
   late GlobalKey<FormState> patientForm ;
   final loading = false.obs;
-  var selectedGender = "Male".obs;
-  List<String> genders = ["Male","Female"];
+  var selectedGender = "Male".tr.obs;
+  List<String> genders = ["Male".tr,"Female".tr];
   late PatientRepository _patientRepository;
 
   PatientFormController() {

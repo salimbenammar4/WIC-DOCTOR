@@ -13,11 +13,15 @@ import '../views/theme_mode_view.dart';
 
 class SettingsController extends GetxController {
   var currentIndex = 0.obs;
-  final pages = <String>[Routes.SETTINGS_LANGUAGE, Routes.PROFILE, Routes.SETTINGS_ADDRESSES, Routes.SETTINGS_THEME_MODE];
+  final pages = <String>[Routes.SETTINGS_LANGUAGE, Routes.PROFILE,  Routes.SETTINGS_THEME_MODE];
 
   void changePage(int index) {
-    currentIndex.value = index;
-    Get.toNamed(pages[index], id: 1);
+    if (index >= 0 && index < pages.length) {
+      currentIndex.value = index;
+      Get.toNamed(pages[index], id: 1);
+    } else {
+      print('Invalid index: $index');
+    }
   }
 
   Route? onGenerateRoute(RouteSettings settings) {
@@ -33,18 +37,7 @@ class SettingsController extends GetxController {
         binding: ProfileBinding(),
       );
     }
-    if (settings.name == Routes.SETTINGS_ADDRESSES) {
-      if (!Get.find<AuthService>().isAuth) {
-        currentIndex.value = 0;
-        Get.find<TabBarController>(tag: 'settings').selectedId.value = '0';
-        Get.toNamed(Routes.LOGIN);
-      }
-      return GetPageRoute(
-        settings: settings,
-        page: () => AddressesView(hideAppBar: true),
-        binding: SettingsBinding(),
-      );
-    }
+
 
     if (settings.name == Routes.SETTINGS_LANGUAGE)
       return GetPageRoute(

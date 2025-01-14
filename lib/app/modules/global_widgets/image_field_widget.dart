@@ -46,9 +46,6 @@ class ImageFieldController extends GetxController {
         uploading.value = false;
         Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
       }
-    } else {
-      uploading.value = false;
-      Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select an image file".tr));
     }
   }
 

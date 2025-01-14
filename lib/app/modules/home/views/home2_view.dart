@@ -121,7 +121,7 @@ class Home2View extends GetView<HomeController> {
                           Expanded(child: Text("Docteurs Recommandés".tr, style: Get.textTheme.headlineSmall)),
                           MaterialButton(
                             onPressed: () {
-                              Get.toNamed(Routes.SPECIALITIES);
+                              Get.toNamed(Routes.SEARCH);
                             },
                             shape: StadiumBorder(side: BorderSide(color: Colors.transparent)),
                             color: Get.theme.colorScheme.secondary.withOpacity(0.1),

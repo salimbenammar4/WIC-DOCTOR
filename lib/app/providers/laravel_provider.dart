@@ -667,25 +667,80 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   Future<List<Doctor>> getRecentDoctorsOfPatient(String id) async {
     var _queryParameters = {
-      'with': 'clinic;clinic.address;specialities;patients',
-      'search': 'patients.id:$id',
-      'searchFields': 'patients.id:=',
-      'orderBy': 'updated_at',
-      'sortedBy': 'desc',
-      'limit': '4',
+      'search': 'patient_id:$id',  // Adjust search query to match patient_id field
+      'searchFields': 'patient_id:=',
+      'orderBy': 'doctor_id',  // Order by doctor_id
+      'sortedBy': 'desc',  // Sort in descending order
+      'limit': '4',  // Limit the results to 4
     };
-    Uri _uri = getApiBaseUri("doctors").replace(queryParameters: _queryParameters);
+
+    // Construct the URI for the API request
+    Uri _uri = getApiBaseUri("getRecentDoctors/$id").replace(queryParameters: _queryParameters);
     Get.log(_uri.toString());
-    var response = await httpClient.getUri(
-      _uri,
-      options: optionsCache,
-    );
-    if (response.data['success'] == true) {
-      return response.data['data'].map<Doctor>((obj) => Doctor.fromJson(obj)).toList();
-    } else {
-      throw new Exception(response.data['message']);
+
+    try {
+      // Make the API call using httpClient
+      var response = await httpClient.getUri(
+        _uri,
+        options: optionsCache,
+      );
+
+      print('Response data: ${response.data}');  // Print out the raw response
+
+      // If the API response is successful, parse the doctor data
+      if (response.data['success'] == true) {
+        // Correctly parse the 'data' list and map it to a List<Doctor>
+        List<Doctor> doctors = (response.data['data'] as List)
+            .map<Doctor>((obj) => Doctor.fromJson(obj))
+            .toList();
+
+        return doctors;  // Return the list of Doctor objects
+      } else {
+        // If the API response is unsuccessful, throw an exception with the message
+        throw Exception(response.data['message']);
+      }
+    } catch (e) {
+      // Handle any errors during the API call
+      throw Exception("Error fetching recent doctors: ${e.toString()}");
     }
   }
+
+
+
+  Future<int> getTotalAppointments(String patientId) async {
+    // Prepare query parameters to exclude appointment_status_id = 7
+    var _queryParameters = {
+      'where': 'appointment_status_id:!=7',  // Exclude appointments with status 7
+    };
+
+    // Construct the URI for the API request, passing patient_id in the URL
+    Uri _uri = getApiBaseUri("totalAppointments/$patientId").replace(queryParameters: _queryParameters);
+    Get.log(_uri.toString());
+
+    try {
+      // Make the API call using httpClient
+      var response = await httpClient.getUri(
+        _uri,
+        options: optionsCache,
+      );
+
+      print('Response data: ${response.data}');  // Print out the raw response
+
+      // If the API response is successful, extract the total appointment count
+      if (response.data['success'] == true) {
+        int totalAppointments = response.data['data'];  // Assuming 'data' contains the total number
+        return totalAppointments;
+      } else {
+        // If the API response is unsuccessful, throw an exception with the message
+        throw Exception(response.data['message']);
+      }
+    } catch (e) {
+      // Handle any errors during the API call
+      throw Exception("Error fetching total appointments: ${e.toString()}");
+    }
+  }
+
+
 
   Future<List<Doctor>> getFeaturedDoctors(String specialityId, int page) async {
     final _address = Get.find<SettingsService>().address.value;
@@ -1557,10 +1612,14 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  Future<List> getAvailabilityHours(String doctorId, DateTime date) async {
+  Future<List> getAvailabilityHours(String doctorId, DateTime date, bool online) async {
+
+    Get.log(online.toString());
     var _queryParameters = {
       'date': DateFormat('y-MM-dd').format(date),
+      'online': online.toString(),
     };
+    Get.log("ONLINE---------------");
     Uri _uri = getApiBaseUri("availability_hours/$doctorId").replace(queryParameters: _queryParameters);
     Get.log(_uri.toString());
     var response = await httpClient.getUri(_uri, options: optionsNetwork);

@@ -21,6 +21,10 @@ class PatientRepository {
     return _laravelApiClient.getAllPatientsWithUserId(UserId);
   }
 
+  Future<int> getTotalAppointments(String patientId) async {
+    return _laravelApiClient.getTotalAppointments(patientId);
+  }
+
   Future<Patient> update(Patient patient) {
     return _laravelApiClient.updatePatient(patient);
   }

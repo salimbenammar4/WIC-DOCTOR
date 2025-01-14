@@ -190,8 +190,6 @@ class MessagesController extends GetxController {
       } finally {
         uploading.value = false;
       }
-    } else {
-      Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select an image file".tr));
     }
   }
 
@@ -246,8 +244,6 @@ class MessagesController extends GetxController {
       } finally {
         uploading.value = false;
       }
-    } else {
-      Get.showSnackbar(Ui.ErrorSnackBar(message: "Please select a file".tr));
     }
   }
 

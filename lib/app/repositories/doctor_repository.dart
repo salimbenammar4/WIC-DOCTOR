@@ -66,8 +66,9 @@ class DoctorRepository {
     return _laravelApiClient.getDoctorReviews(doctorId);
   }
 
-  Future<List> getAvailabilityHours(String doctorId, DateTime date) {
-    return _laravelApiClient.getAvailabilityHours(doctorId, date);
+  Future<List> getAvailabilityHours(String doctorId, DateTime date, bool online) {
+    Get.log("sssssssssssssssssssssssss");
+    return _laravelApiClient.getAvailabilityHours(doctorId, date, online);
   }
 
   Future<List<Doctor>> getRecentDoctorsOfPatient(String id) {
