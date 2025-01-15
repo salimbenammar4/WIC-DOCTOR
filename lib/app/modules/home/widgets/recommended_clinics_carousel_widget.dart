@@ -19,7 +19,7 @@ class RecommendedClinicsCarouselWidget extends GetWidget<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 375,
+      height: 350,
       child: Obx(() {
         return ListView.builder(
             padding: EdgeInsets.only(bottom: 18),
@@ -50,7 +50,7 @@ class RecommendedClinicsCarouselWidget extends GetWidget<HomeController> {
                       ClinicThumbsWidget(clinic: _clinic),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-                        height: 110,
+                        height: 70,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Get.theme.primaryColor,
@@ -65,11 +65,8 @@ class RecommendedClinicsCarouselWidget extends GetWidget<HomeController> {
                               maxLines: 2,
                               style: Get.textTheme.bodyMedium?.merge(TextStyle(color: Get.theme.hintColor)),
                             ),
-                            Text(
-                              Ui.getDistance(_clinic.distance),
-                              style: Get.textTheme.bodyLarge,
-                            ),
-                            SizedBox(height: 8),
+
+                            SizedBox(height: 5),
                             Wrap(
                               spacing: 5,
                               alignment: WrapAlignment.spaceBetween,

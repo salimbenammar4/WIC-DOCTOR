@@ -91,10 +91,6 @@ class MapsCarouselWidget extends GetWidget<MapsController> {
                                   maxLines: 2,
                                   style: Get.textTheme.bodyMedium?.merge(TextStyle(color: Get.theme.hintColor)),
                                 ),
-                                Text(
-                                  controller.calculateDistance(_clinic.address!.getLatLng()),
-                                  style: Get.textTheme.bodyLarge,
-                                ),
                                 SizedBox(height: 10),
                                 Wrap(
                                   children: Ui.getStarsList(_clinic.rate),
