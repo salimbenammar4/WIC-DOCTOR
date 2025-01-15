@@ -49,6 +49,7 @@ class DropDownList extends StatelessWidget {
             onChanged: (Pattern? newPattern) {
               if (newPattern != null) {
                 print("pattern ID!!:"+newPattern.id);
+                print("PAttern nom!!:"+newPattern.nom);
                 onPatternSelected(newPattern);
               }
             },

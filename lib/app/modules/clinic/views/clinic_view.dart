@@ -18,6 +18,7 @@ import '../widgets/featured_carousel_widget.dart';
 import '../widgets/review_item_widget.dart';
 import '../widgets/review_popup.dart';
 
+
 class ClinicView extends GetView<ClinicController> {
   @override
   Widget build(BuildContext context) {
@@ -347,7 +348,7 @@ class ClinicView extends GetView<ClinicController> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Text(
-          "Adresse non trouvée",
+          "Address not found".tr,
           style: Get.textTheme.bodySmall?.copyWith(color: Colors.black),
         ),
       )
@@ -484,14 +485,16 @@ class ClinicView extends GetView<ClinicController> {
                 ),
               ),
               Container(
-                child: Text(_clinic.level.name.tr,
-                    maxLines: 1,
-                    style: Get.textTheme.bodyMedium?.merge(
-                      TextStyle(color: Get.theme.colorScheme.secondary, height: 1.4, fontSize: 10),
-                    ),
-                    softWrap: false,
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.fade),
+                child: Text(
+                  _clinic.level.name.tr,
+                  maxLines: 1,
+                  style: Get.textTheme.bodyMedium?.merge(
+                    TextStyle(color: Get.theme.colorScheme.secondary, height: 1.4, fontSize: 10),
+                  ),
+                  softWrap: false,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.fade,
+                ),
                 decoration: BoxDecoration(
                   color: Get.theme.colorScheme.secondary.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
@@ -502,26 +505,18 @@ class ClinicView extends GetView<ClinicController> {
           ),
           Row(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.end,
-                      children: List.from(Ui.getStarsList(_clinic.rate))
-                        ..addAll([
-                          SizedBox(width: 5),
-                          Text(
-                            "Reviews (%s)".trArgs([_clinic.totalReviews.toString()]),
-                            style: Get.textTheme.bodySmall,
-                          ),
-                        ]),
-                    ),
-                  ),
-                  Text(
-                    "Appointments (%s)".trArgs([_clinic.total_appointments.toString()]),
-                    style: Get.textTheme.bodySmall,
-                  ),
-                ],
+              Expanded(
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.end,
+                  children: List.from(Ui.getStarsList(_clinic.rate))
+                    ..addAll([
+                      SizedBox(width: 5),
+                      Text(
+                        "Reviews (%s)".trArgs([_clinic.totalReviews.toString()]),
+                        style: Get.textTheme.bodySmall,
+                      ),
+                    ]),
+                ),
               ),
             ],
           ),
@@ -529,4 +524,5 @@ class ClinicView extends GetView<ClinicController> {
       ),
     );
   }
+
 }

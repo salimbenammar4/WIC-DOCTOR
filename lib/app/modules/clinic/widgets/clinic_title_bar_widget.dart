@@ -9,7 +9,7 @@ class ClinicTitleBarWidget extends StatelessWidget implements PreferredSizeWidge
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
+      margin: EdgeInsets.symmetric(horizontal: 20),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       height: 110,
       width: double.infinity,
@@ -24,7 +24,7 @@ class ClinicTitleBarWidget extends StatelessWidget implements PreferredSizeWidge
           ),
         ],
       ),
-      child: title, // Make sure this widget is not empty
+      child: title, // Directly using the `title` widget
     );
   }
 
