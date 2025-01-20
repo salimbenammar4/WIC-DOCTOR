@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../widgets/review_popup.dart';
@@ -113,17 +114,17 @@ class DoctorView extends GetView<DoctorController> {
                             }
                             return Container(
                               constraints: BoxConstraints(
-                                maxWidth: double.infinity, // Ensure the container uses the full available width
-                                maxHeight: Get.textTheme.bodyLarge!.fontSize! * 2.2 * 3, // Limit height for 2 lines
+                                maxWidth: double.infinity,
                               ),
-                              child: ClipRect( // Ensures content doesn't breach boundaries
-                                child: SingleChildScrollView(
-                                  physics: NeverScrollableScrollPhysics(), // Prevent scrolling
-                                  child: Ui.applyHtml(
-                                    _doctor.description,
-                                    style: Get.textTheme.bodyLarge,
+                              child: Html(
+                                data: _doctor.description,
+                                style: {
+                                  "body": Style(
+                                    margin: Margins.zero, // Use Margins.zero instead of EdgeInsets.zero
+                                    fontSize: FontSize(Get.textTheme.bodySmall!.fontSize ?? 18),
+                                    lineHeight: LineHeight(1.5),
                                   ),
-                                ),
+                                },
                               ),
                             );
                           }),
@@ -438,7 +439,7 @@ class DoctorView extends GetView<DoctorController> {
             children: [
               Expanded(
                 child: Text(
-                  _doctor.name ?? '',
+                  _doctor.name.toUpperCase() ?? '',
                   style: Get.textTheme.headlineSmall?.merge(TextStyle(height: 1.1)),
                   maxLines: 2,
                   softWrap: true,

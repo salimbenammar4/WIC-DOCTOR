@@ -191,78 +191,7 @@ class BookDoctorView extends GetView<BookDoctorController> {
                   ),
                 );}
             }),
-            Obx(() {
-              if (!controller.appointment.value.canOnlineConsultation) return SizedBox();
-              final ThemeData theme = ThemeData();
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                decoration: Ui.getBoxDecoration(color: controller.getColor(controller.onlineConsultation.value)),
-                child: Theme(
-                  data: theme.copyWith(
-                    switchTheme: SwitchThemeData(
-                      thumbColor: WidgetStateProperty.resolveWith<Color?>(
-                              (Set<WidgetState> states) {
-                            if (states.contains(WidgetState.disabled)) {
-                              return null;
-                            }
-                            if (states.contains(WidgetState.selected)) {
-                              return Get.theme.primaryColor;
-                            }
-                            return null;
-                          }),
-                      trackColor: WidgetStateProperty.resolveWith<Color?>(
-                              (Set<WidgetState> states) {
-                            if (states.contains(WidgetState.disabled)) {
-                              return null;
-                            }
-                            if (states.contains(WidgetState.selected)) {
-                              return Get.theme.primaryColor;
-                            }
-                            return null;
-                          }),
-                    ),
-                    radioTheme: RadioThemeData(
-                      fillColor: WidgetStateProperty.resolveWith<Color?>(
-                              (Set<WidgetState> states) {
-                            if (states.contains(WidgetState.disabled)) {
-                              return null;
-                            }
-                            if (states.contains(WidgetState.selected)) {
-                              return Get.theme.primaryColor;
-                            }
-                            return null;
-                          }),
-                    ),
-                    checkboxTheme: CheckboxThemeData(
-                      fillColor: WidgetStateProperty.resolveWith<Color?>(
-                              (Set<WidgetState> states) {
-                            if (states.contains(WidgetState.disabled)) {
-                              return null;
-                            }
-                            if (states.contains(WidgetState.selected)) {
-                              return Get.theme.primaryColor;
-                            }
-                            return null;
-                          }),
-                    ),
-                  ),
 
-                  child: RadioListTile(
-                    value: true,
-                    groupValue: controller.onlineConsultation.value,
-                    onChanged: (value) {
-                      controller.toggleOnline(value);
-                      controller.appointment.value.address = controller.appointment.value.clinic.address;
-                      print(controller.appointment.value.address?.address ?? "there is no address");
-                    },
-                    title: Text("Online Consultation".tr,
-                        style: controller.getTextTheme(
-                            controller.onlineConsultation.value))
-                        .paddingSymmetric(vertical: 20),
-                  ),
-                ),
-              );
-            }),
             Obx(() {
               if (!controller.appointment.value.canAppointmentAtClinic) return SizedBox();
               final ThemeData theme = ThemeData();
@@ -335,7 +264,78 @@ class BookDoctorView extends GetView<BookDoctorController> {
                 ),
               );
             }),
+            Obx(() {
+              if (!controller.appointment.value.canOnlineConsultation) return SizedBox();
+              final ThemeData theme = ThemeData();
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: Ui.getBoxDecoration(color: controller.getColor(controller.onlineConsultation.value)),
+                child: Theme(
+                  data: theme.copyWith(
+                    switchTheme: SwitchThemeData(
+                      thumbColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.disabled)) {
+                              return null;
+                            }
+                            if (states.contains(WidgetState.selected)) {
+                              return Get.theme.primaryColor;
+                            }
+                            return null;
+                          }),
+                      trackColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.disabled)) {
+                              return null;
+                            }
+                            if (states.contains(WidgetState.selected)) {
+                              return Get.theme.primaryColor;
+                            }
+                            return null;
+                          }),
+                    ),
+                    radioTheme: RadioThemeData(
+                      fillColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.disabled)) {
+                              return null;
+                            }
+                            if (states.contains(WidgetState.selected)) {
+                              return Get.theme.primaryColor;
+                            }
+                            return null;
+                          }),
+                    ),
+                    checkboxTheme: CheckboxThemeData(
+                      fillColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.disabled)) {
+                              return null;
+                            }
+                            if (states.contains(WidgetState.selected)) {
+                              return Get.theme.primaryColor;
+                            }
+                            return null;
+                          }),
+                    ),
+                  ),
 
+                  child: RadioListTile(
+                    value: true,
+                    groupValue: controller.onlineConsultation.value,
+                    onChanged: (value) {
+                      controller.toggleOnline(value);
+                      controller.appointment.value.address = controller.appointment.value.clinic.address;
+                      print(controller.appointment.value.address?.address ?? "there is no address");
+                    },
+                    title: Text("Online Consultation".tr,
+                        style: controller.getTextTheme(
+                            controller.onlineConsultation.value))
+                        .paddingSymmetric(vertical: 20),
+                  ),
+                ),
+              );
+            }),
             Obx(() {
               return AnimatedOpacity(
                 opacity: controller.atAddress.value ? 1 : 0,

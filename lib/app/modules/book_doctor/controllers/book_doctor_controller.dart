@@ -67,6 +67,7 @@ class BookDoctorController extends GetxController {
         coupon: new Coupon()
     );
     await getAddresses();
+    toggleAtClinic(true);
     await getTimes();
     await getPatients();
     await getPattern();
@@ -84,7 +85,7 @@ class BookDoctorController extends GetxController {
 
   }
   void toggleAtClinic(value) {
-    atClinic.value = value;
+    atClinic.value = true;
     atAddress.value = false;
     onlineConsultation.value = false;
     appointment.update((val) {

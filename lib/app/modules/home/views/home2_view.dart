@@ -133,7 +133,7 @@ class Home2View extends GetView<HomeController> {
                     ),
                     RecommendedDoctorsCarouselWidget(),
                     if (!Get.find<SettingsService>().isModuleActivated("Pharmacies"))
-                      Container(
+                      /*Container(
                         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                         child: Row(
                           children: [
@@ -151,7 +151,7 @@ class Home2View extends GetView<HomeController> {
                         ),
                       ),
                     if (!Get.find<SettingsService>().isModuleActivated("Pharmacies"))
-                      RecommendedClinicsCarouselWidget(),
+                      RecommendedClinicsCarouselWidget(),*/
                     if (Get.find<SettingsService>().isModuleActivated("Pharmacies"))
                       RecommendedMedicinesCarouselWidget(),
                     //FeaturedSpecialitiesWidget(),

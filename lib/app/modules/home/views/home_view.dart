@@ -52,7 +52,7 @@ class HomeView extends GetView<HomeController> {
                 ),
               ),
               SpecialitiesCarouselWidget(),
-              Container(
+              /*Container(
                 color: Get.theme.primaryColor,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Row(
@@ -67,7 +67,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ],
                 ),
-              ),
+              ),*/
               RecommendedDoctorsCarouselWidget(),
               FeaturedSpecialitiesWidget(),
             ],
