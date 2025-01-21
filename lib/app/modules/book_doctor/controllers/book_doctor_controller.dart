@@ -68,11 +68,15 @@ class BookDoctorController extends GetxController {
     );
     await getAddresses();
     toggleAtClinic(true);
-    await getTimes();
+    await getTimes();  // First time call
     await getPatients();
     await getPattern();
+    reTriggerGetTimes();
     super.onInit();
+  }
 
+  void reTriggerGetTimes() async {
+    await getTimes();  // Re-trigger getTimes when needed
   }
   Future refreshPatients({bool showMessage = false}) async {
     this.patients.clear();

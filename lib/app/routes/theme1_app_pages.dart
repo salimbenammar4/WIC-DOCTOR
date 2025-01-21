@@ -90,7 +90,7 @@ class Theme1AppPages {
     GetPage(name: Routes.PHONE_VERIFICATION, page: () => PhoneVerificationView(), binding: AuthBinding()),
     GetPage(name: Routes.OTP_VERIFICATION, page: () => PasswordVerificationView(), binding: AuthBinding()),
     GetPage(name: Routes.PASS_RESET, page: () => PasswordResetView(), binding: AuthBinding()),
-    GetPage(name: Routes.DOCTOR, page: () => DoctorView(), binding: DoctorBinding(), transition: Transition.downToUp),
+    GetPage(name: Routes.DOCTOR, page: () => DoctorView(), binding: DoctorBinding(), transition: Transition.downToUp, middlewares: [AuthMiddleware()]),
     GetPage(name: Routes.BOOK_DOCTOR, page: () => BookDoctorView(), binding: BookDoctorBinding(), middlewares: [AuthMiddleware()]),
     GetPage(name: Routes.APPOINTMENT_SUMMARY, page: () => AppointmentSummaryView(), binding: BookDoctorBinding(), middlewares: [AuthMiddleware()]),
     GetPage(name: Routes.CHECKOUT, page: () => CheckoutView(), binding: CheckoutBinding(), middlewares: [AuthMiddleware()]),

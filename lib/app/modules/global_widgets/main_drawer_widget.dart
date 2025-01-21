@@ -148,13 +148,13 @@ class MainDrawerWidget extends StatelessWidget {
               await Get.find<RootController>().changePage(0);
             },
           ),
-          DrawerLinkWidget(
+          /*DrawerLinkWidget(
             icon: Icons.place_outlined,
             text: "Explore Clinics",
             onTap: (e) {
               Get.offAndToNamed(Routes.MAPS);
             },
-          ),
+          ),*/
           DrawerLinkWidget(
             icon: Icons.folder_special_outlined,
             text: "Specialities",

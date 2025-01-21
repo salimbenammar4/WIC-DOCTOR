@@ -676,9 +676,28 @@ class BookDoctorView extends GetView<BookDoctorController> {
               ),
             ),
 
+
             Obx(() {
               if (controller.patterns.isEmpty) {
-                return CircularProgressIndicator(); // Or some placeholder widget
+                return Container(
+                  padding: EdgeInsets.only(top: 20, bottom: 14, left: 20, right: 20),
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10), // Direct values for margins
+                  decoration: BoxDecoration(
+                    color: Get.theme.primaryColor,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(color: Get.theme.focusColor.withOpacity(0.1), blurRadius: 10, offset: Offset(0, 5)),
+                    ],
+                    border: Border.all(color: Get.theme.focusColor.withOpacity(0.05)),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "No patterns available".tr,
+                      style: Get.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ); // Or some placeholder widget
               } else {
                 return DropDownList(
                   patterns: controller.patterns,
