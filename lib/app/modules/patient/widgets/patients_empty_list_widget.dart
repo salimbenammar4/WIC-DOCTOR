@@ -62,7 +62,7 @@ class PatientsEmptyListWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              "You don't have any patient, you can create new one".tr,
+              "You don't have any patient, you need to have at least 1 patient so you can book appointments using that patient.".tr,
               textAlign: TextAlign.center,
               style: Get.textTheme.headlineMedium,
             ),

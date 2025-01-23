@@ -11,15 +11,15 @@ class PrivacyView extends GetView<PrivacyController> {
         appBar: AppBar(
           title: Text(
             "Privacy Policy".tr,
-            style: Get.textTheme.titleLarge,
+            style: Get.textTheme.titleLarge?.copyWith(color: Colors.white), // Set title color to white
           ),
           centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+          backgroundColor: Color(0xFF5C6BC0), // Set background color using the hex code
+          elevation: 0, // Remove AppBar shadow
           automaticallyImplyLeading: false,
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
-            onPressed: () => {Get.back()},
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios, color: Colors.white), // Set back icon color to white
+            onPressed: () => Get.back(),
           ),
         ),
         body: RefreshIndicator(

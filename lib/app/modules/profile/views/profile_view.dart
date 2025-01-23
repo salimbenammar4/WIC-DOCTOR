@@ -22,19 +22,19 @@ class ProfileView extends GetView<ProfileController> {
         appBar: hideAppBar
             ? null
             : AppBar(
-                title: Text(
-                  "Profile".tr,
-                  style: context.textTheme.titleLarge,
-                ),
-                centerTitle: true,
-                backgroundColor: Colors.transparent,
-                automaticallyImplyLeading: false,
-                leading: new IconButton(
-                  icon: new Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
-                  onPressed: () => Get.back(),
-                ),
-                elevation: 0,
-              ),
+          title: Text(
+            "Profile".tr,
+            style: context.textTheme.titleLarge?.copyWith(color: Colors.white), // Set title color to white
+          ),
+          centerTitle: true,
+          backgroundColor: Color(0xFF5C6BC0), // Set background color using the hex code
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios, color: Colors.white), // Set back icon color to white
+            onPressed: () => Get.back(),
+          ),
+          elevation: 0, // Remove AppBar shadow
+        ),
         bottomNavigationBar: Container(
           padding: EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
@@ -138,7 +138,7 @@ class ProfileView extends GetView<ProfileController> {
                 validator: (input) => input!.length < 3 ? "Should be more than 3 letters".tr : null,
                 initialValue: controller.user.value.address,
                 hintText: "123 Street, City 136, State, Country".tr,
-                labelText: "Address".tr,
+                labelText: "Your address".tr,
                 iconData: Icons.map_outlined,
               ),
               TextFieldWidget(

@@ -322,7 +322,7 @@ class LaravelApiClient extends GetxService with ApiClient {
     final _address = Get.find<SettingsService>().address.value;
     // TODO Pagination
     var _queryParameters = {
-      'with': 'clinic;clinic.address;specialities',
+      'with': 'address;specialities',
       'search': 'specialities.id:${specialities.join(',')};name:$keywords',
       'searchFields': 'specialities.id:in;name:like',
       'searchJoin': 'and',

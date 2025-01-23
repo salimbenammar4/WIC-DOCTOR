@@ -4,6 +4,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 
 import '../../../../common/ui.dart';
@@ -163,17 +164,22 @@ class FavoritesListItemWidget extends StatelessWidget {
                       ),
                       SizedBox(width: 5),
                       Flexible(
-                        child: Text(
-                          _favorite.doctor.clinic.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          style: Get.textTheme.bodyLarge,
+                        child: Html(
+                          data: _favorite.doctor.description + '...',
+                          style: {
+                            "body": Style(
+                              maxLines: 1,
+                              margin: Margins.zero, // Use Margins.zero instead of EdgeInsets.zero
+                              fontSize: FontSize(Get.textTheme.bodyLarge?.fontSize ?? 18),
+                              lineHeight: LineHeight(1.5),
+                            ),
+                          },
                         ),
                       ),
                     ],
                   ),
-                  Divider(height: 8, thickness: 1, color: Get.theme.dividerColor,),
+
+
                   // Wrap(
                   //   spacing: 5,
                   //   children: List.generate(_favorite.options.length, (index) {

@@ -140,7 +140,7 @@ class ChipWidget extends StatelessWidget {
     Color _backgroundColor = backgroundColor ?? Get.theme.focusColor.withOpacity(0.1);
     return Obx(() {
       return RawChip(
-        side: BorderSide(color: Colors.transparent),
+        side: BorderSide(color: Colors.white),
         elevation: 0,
         label: Text(text),
         labelStyle: controller.isSelected(this.id) ? _style?.merge(TextStyle(color: Get.theme.primaryColor)) : _style,

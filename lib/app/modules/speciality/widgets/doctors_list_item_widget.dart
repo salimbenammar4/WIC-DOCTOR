@@ -4,6 +4,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 
 import '../../../../common/ui.dart';
@@ -17,10 +18,12 @@ class DoctorsListItemWidget extends StatelessWidget {
   })  : _doctor = doctor,
         super(key: key);
 
+
   final Doctor _doctor;
 
   @override
   Widget build(BuildContext context) {
+    print("Doctor Address: ${_doctor.address?.description}");
     return GestureDetector(
       onTap: () {
         Get.toNamed(Routes.DOCTOR, arguments: {'doctor': _doctor, 'heroTag': 'doctor_list_item'});
@@ -164,7 +167,9 @@ class DoctorsListItemWidget extends StatelessWidget {
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
-                          _doctor.clinic.name,
+                          _doctor.specialities.isNotEmpty
+                              ? _doctor.specialities.map((s) => s.name).join(', ')
+                              : "No specialities available",
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,
@@ -172,6 +177,11 @@ class DoctorsListItemWidget extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                  Divider(
+                    height: 8,
+                    thickness: 1,
+                    color: Get.theme.dividerColor,
                   ),
                   Row(
                     children: [
@@ -183,7 +193,7 @@ class DoctorsListItemWidget extends StatelessWidget {
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
-                          _doctor.clinic.address?.address ?? '',
+                          _doctor.address?.description ?? "No description available",
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,
@@ -192,23 +202,7 @@ class DoctorsListItemWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Divider(height: 8, thickness: 1, color: Get.theme.dividerColor,),
-                  Wrap(
-                    spacing: 5,
-                    children: List.generate(_doctor.specialities.length, (index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        child: Text(_doctor.specialities.elementAt(index).name, style: Get.textTheme.bodySmall?.merge(TextStyle(fontSize: 10))),
-                        decoration: BoxDecoration(
-                            color: Get.theme.primaryColor,
-                            border: Border.all(
-                              color: Get.theme.focusColor.withOpacity(0.2),
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(20))),
-                      );
-                    }),
-                    runSpacing: 5,
-                  ),
+
                 ],
               ),
             ),

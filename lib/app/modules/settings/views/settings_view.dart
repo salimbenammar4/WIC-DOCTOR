@@ -14,13 +14,13 @@ class SettingsView extends GetView<SettingsController> {
       appBar: AppBar(
         title: Text(
           "Settings".tr,
-          style: context.textTheme.titleLarge,
+          style: context.textTheme.titleLarge?.copyWith(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFF5C6BC0),
         automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Get.back(),
         ),
         elevation: 0,

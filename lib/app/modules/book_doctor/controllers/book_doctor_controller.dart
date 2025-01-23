@@ -25,8 +25,8 @@ import '../../global_widgets/tab_bar_widget.dart';
 import '../../../models/pattern_model.dart';
 class BookDoctorController extends GetxController {
   final scheduled = false.obs;
-  final onlineConsultation = true.obs;
-  final atClinic = false.obs;
+  final onlineConsultation = false.obs;
+  final atClinic = true.obs;
   final atAddress = false.obs;
   final List<bool> appointmentTypes = <bool>[true, false, false];
   final appointment = Appointment().obs;
@@ -55,7 +55,8 @@ class BookDoctorController extends GetxController {
 
   @override
   void onInit() async {
-    final _doctor = (Get.arguments['doctor'] as Doctor);
+    final _doctor = (Get.arguments['doctor']);
+    print("Doctor Object: ${_doctor.toJson()}");
     this.appointment.value = Appointment(
         appointmentAt: DateTime.now(),
         doctor: _doctor,
@@ -63,7 +64,7 @@ class BookDoctorController extends GetxController {
         taxes: _doctor.clinic.taxes,
         online: true,
         user: Get.find<AuthService>().user.value,
-        address: _doctor.clinic.address,
+        address: _doctor.address,
         coupon: new Coupon()
     );
     await getAddresses();
@@ -73,6 +74,7 @@ class BookDoctorController extends GetxController {
     await getPattern();
     reTriggerGetTimes();
     super.onInit();
+    print("Doctor Address Description: ${_doctor.address?.description}");
   }
 
   void reTriggerGetTimes() async {

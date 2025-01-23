@@ -131,7 +131,7 @@ class MainDrawerWidget extends StatelessWidget {
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: Get.find<AuthService>().user.value.verifiedPhone ?? false ? Icon(Icons.check_circle, color: Get.theme.colorScheme.secondary, size: 24) : SizedBox(),
+                        child: Get.find<AuthService>().user.value.verifiedPhone ?? false ? Icon(Icons.check_circle, color: Colors.green, size: 24) : SizedBox(),
                       )
                     ],
                   ),
@@ -247,13 +247,13 @@ class MainDrawerWidget extends StatelessWidget {
               color: Get.theme.focusColor.withOpacity(0.3),
             ),
           ),
-          DrawerLinkWidget(
+         /* DrawerLinkWidget(
             icon: Icons.account_balance_wallet_outlined,
             text: "Wallets",
             onTap: (e) async {
               await Get.offAndToNamed(Routes.WALLETS);
             },
-          ),
+          ),*/
           DrawerLinkWidget(
             icon: Icons.person_outline,
             text: "Account",
@@ -294,13 +294,13 @@ class MainDrawerWidget extends StatelessWidget {
               color: Get.theme.focusColor.withOpacity(0.3),
             ),
           ),
-          DrawerLinkWidget(
+         /* DrawerLinkWidget(
             icon: Icons.help_outline,
             text: "Help & FAQ",
             onTap: (e) async {
               await Get.offAndToNamed(Routes.HELP);
             },
-          ),
+          ),*/
           CustomPageDrawerLinkWidget(),
           Obx(() {
             if (Get.find<AuthService>().isAuth) {

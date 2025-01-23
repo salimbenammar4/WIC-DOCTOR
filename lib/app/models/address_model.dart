@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,7 +24,8 @@ class Address extends Model {
 
   Address.fromJson(Map<String, dynamic>? json) {
     super.fromJson(json);
-    _description = stringFromJson(json, 'description');
+    if (json!=null && json['description']!=null){
+    _description = stringFromJson(jsonDecode(json['description']), 'fr');}
     _address = stringFromJson(json, 'address');
     _latitude = doubleFromJson(json, 'latitude', decimal: 10);
     _longitude = doubleFromJson(json, 'longitude', decimal: 10);

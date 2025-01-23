@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // For SystemChrome
 import 'package:get/get.dart';
 
 import '../../global_widgets/circular_loading_widget.dart';
@@ -35,35 +36,58 @@ class MessagesView extends GetView<MessagesController> {
 
   @override
   Widget build(BuildContext context) {
+    // Set the status bar style dynamically
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // Transparent status bar
+      statusBarIconBrightness: Brightness.dark, // Black icons
+      statusBarBrightness: Brightness.light, // Ensure compatibility for iOS
+    ));
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           "Chats".tr,
-          style: Get.textTheme.titleLarge,
+          style: Get.textTheme.titleLarge?.copyWith(color: Colors.white), // Title color to white
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFF5C6BC0), // Hex color as appBar background
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: Icon(Icons.sort, color: Get.theme.hintColor),
+          icon: Icon(Icons.sort, color: Colors.white), // Back icon color to white
           onPressed: () => Scaffold.of(context).openDrawer(),
         ),
-        actions: [NotificationsButtonWidget()],
+        actions: [NotificationsButtonWidget(iconColor: Colors.white,)],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          controller.lastDocument.value = null; // reset last document for fresh load
-          await controller.listenForMessages(); // reload messages
-        },
-        child: Obx(
-              () => controller.messages.isNotEmpty
-              ? conversationsList()
-              : CircularLoadingWidget(
-            height: Get.height,
-            onCompleteText: "Messages List Empty".tr,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.black.withOpacity(0.1), Colors.transparent],
+                begin: Alignment.topCenter,
+                end: Alignment.center,
+              ),
+            ),
           ),
-        ),
+          SafeArea(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                controller.lastDocument.value = null;
+                await controller.listenForMessages();
+              },
+              child: Obx(
+                    () => controller.messages.isNotEmpty
+                    ? conversationsList()
+                    : CircularLoadingWidget(
+                  height: Get.height,
+                  onCompleteText: "Messages List Empty".tr,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
