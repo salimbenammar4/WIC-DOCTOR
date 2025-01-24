@@ -1,4 +1,4 @@
-import 'package:get/get.dart' show GetPage, Transition;
+import 'package:get/get.dart' show BindingsBuilder, Get, GetPage, Inst, Transition;
 import '../../pharmacies/routes/theme1_pages.dart';
 import '../middlewares/auth_middleware.dart';
 import '../modules/auth/bindings/auth_binding.dart';
@@ -15,6 +15,8 @@ import '../modules/maps/bindings/maps_binding.dart';
 import '../modules/maps/views/maps_view.dart';
 import '../modules/messages/binding/messages_binding.dart';
 import '../modules/patient/bindings/patient_binding.dart';
+import '../modules/patient/controllers/create_patient_controller.dart';
+import '../modules/patient/views/create_patient_view_from_Book_Doctor.dart';
 import '../modules/patient/views/patient_form_view.dart';
 import '../modules/patient/views/create_patient_view.dart';
 import '../modules/patient/views/patient_view.dart';
@@ -119,6 +121,13 @@ class Theme1AppPages {
     GetPage(name: Routes.GALLERY, page: () => GalleryView(), binding: GalleryBinding(), transition: Transition.fadeIn),
     GetPage(name: Routes.WALLETS, page: () => WalletsView(), binding: WalletsBinding(), middlewares: [AuthMiddleware()]),
     GetPage(name: Routes.WALLET_FORM, page: () => WalletFormView(), binding: WalletsBinding(), middlewares: [AuthMiddleware()]),
+    GetPage(
+      name: Routes.PATIENT_CREATE_FROM_BOOK_DOCTOR,
+      page: () => CreatePatientViewFromBookDoctorView(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<CreatePatientController>(() => CreatePatientController());
+      }),
+    ),
   ] +
       Theme1PharmaciesPages.routes;
 }

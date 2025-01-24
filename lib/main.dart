@@ -43,6 +43,7 @@ Future<void> initServices() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await initServices();
   final authService = Get.find<AuthService>(); // Get the AuthService instance
   final settingsService = Get.find<SettingsService>(); // Get the SettingsService instance*/

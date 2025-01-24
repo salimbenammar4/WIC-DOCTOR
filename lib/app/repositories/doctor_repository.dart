@@ -72,6 +72,7 @@ class DoctorRepository {
   }
 
   Future<List<Doctor>> getRecentDoctorsOfPatient(String id) {
+
     return _laravelApiClient.getRecentDoctorsOfPatient(id);
   }
 

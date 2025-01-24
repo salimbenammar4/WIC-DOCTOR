@@ -52,4 +52,5 @@ class Routes {
   static const OTP_VERIFICATION='/new_password';
   static const PASS_RESET='/password_reset';
   static const HOME='/home';
+  static const PATIENT_CREATE_FROM_BOOK_DOCTOR='/create_patient_view_from_Book_Doctor';
 }

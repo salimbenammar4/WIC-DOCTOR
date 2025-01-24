@@ -172,13 +172,13 @@ class AccountView extends GetView<AccountController> {
               decoration: Ui.getBoxDecoration(),
               child: Column(
                 children: [
-                  AccountLinkWidget(
+                  /*AccountLinkWidget(
                     icon: Icon(Icons.support_outlined, color: Get.theme.colorScheme.secondary),
                     text: Text("Help & FAQ".tr),
                     onTap: (e) {
                       Get.toNamed(Routes.HELP);
                     },
-                  ),
+                  ),*/
                   AccountLinkWidget(
                     icon: Icon(Icons.logout, color: Get.theme.colorScheme.secondary),
                     text: Text("Logout".tr),

@@ -1,5 +1,5 @@
 {
-  "laravel_base_url": "https://dashboard.wicdoctor.com/",
+  "laravel_base_url": "https://dashboard.wic-doctor.com/",
   "api_path": "/api",
   "received": 1,
   "accepted": 10,

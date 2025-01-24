@@ -13,13 +13,13 @@ class SearchView extends GetView<searchController.SearchController> {
       appBar: AppBar(
         title: Text(
           "Search".tr,
-          style: context.textTheme.titleLarge,
+          style: context.textTheme.titleLarge?.copyWith(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFF5C6BC0),
         automaticallyImplyLeading: false,
         leading: new IconButton(
-          icon: new Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
+          icon: new Icon(Icons.arrow_back_ios, color: Colors.white ),
           onPressed: () => Get.back(),
         ),
         elevation: 0,

@@ -23,5 +23,7 @@ class PatientBinding extends Bindings {
     Get.lazyPut<PatientsController>(
             () => PatientsController()
     );
+
+
   }
 }

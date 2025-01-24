@@ -57,11 +57,11 @@ class ChatsView extends GetView<MessagesController> {
     }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFF5C6BC0),
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () async {
             controller.message.value = Message([]);
             controller.chats.clear();
@@ -75,7 +75,7 @@ class ChatsView extends GetView<MessagesController> {
             controller.message.value.name,
             overflow: TextOverflow.fade,
             maxLines: 1,
-            style: Get.textTheme.titleLarge?.merge(TextStyle(letterSpacing: 1.3)),
+            style: Get.textTheme.titleLarge?.merge(TextStyle(letterSpacing: 1.3)).copyWith(color: Colors.white),
           );
         }),
       ),
@@ -89,7 +89,9 @@ class ChatsView extends GetView<MessagesController> {
             if (controller.uploading.isTrue)
               return Container(
                 padding: EdgeInsets.symmetric(vertical: 30),
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  strokeWidth: 4.0, // Set the width of the indicator
+                ),
               );
             else
               return SizedBox();

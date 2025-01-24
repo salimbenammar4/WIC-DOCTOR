@@ -56,6 +56,33 @@ class CreatePatientController extends GetxController {
     }
   }
 
+
+  void createPatientFormFromBookDoctor() async {
+    Get.focusScope?.unfocus();
+    if (patientForm.currentState!.validate()) {
+      try {
+        patientForm.currentState!.save();
+        loading.value = true;
+        patient.value.user_id = Get.find<AuthService>().user.value.id;
+        print("mmmmmmmmmmmmmmmmmmmmmmmmmm");
+        print(patient);
+        var _patient = await _patientRepository.create(patient.value);
+        Get.back(result: {
+          'refresh': true, // Optional: Flag to refresh data if necessary
+        });
+        refresh();
+        Get.showSnackbar(Ui.SuccessSnackBar(message: "Patient saved successfully".tr));
+
+      } catch (e) {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      } finally {
+        loading.value = false;
+      }
+    } else {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "There are errors in some fields please correct them!".tr));
+    }
+  }
+
   void resetPatientForm() {
     patientForm.currentState!.reset();
   }

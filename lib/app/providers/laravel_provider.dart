@@ -685,23 +685,20 @@ class LaravelApiClient extends GetxService with ApiClient {
         options: optionsCache,
       );
 
-      print('Response data: ${response.data}');  // Print out the raw response
+      print('Response data: ${response.data}'); // Debugging
 
-      // If the API response is successful, parse the doctor data
+      // Parse successful responses
       if (response.data['success'] == true) {
-        // Correctly parse the 'data' list and map it to a List<Doctor>
         List<Doctor> doctors = (response.data['data'] as List)
             .map<Doctor>((obj) => Doctor.fromJson(obj))
             .toList();
-
-        return doctors;  // Return the list of Doctor objects
+        return doctors;
       } else {
-        // If the API response is unsuccessful, throw an exception with the message
-        throw Exception(response.data['message']);
+        throw Exception(response.data['message']); // Handles API-defined errors
       }
     } catch (e) {
-      // Handle any errors during the API call
-      throw Exception("Error fetching recent doctors: ${e.toString()}");
+      print("Error fetching recent doctors: ${e.toString()}"); // Log the error
+      return []; // Return an empty list or handle appropriately
     }
   }
 

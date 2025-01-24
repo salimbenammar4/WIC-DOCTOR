@@ -12,6 +12,7 @@ import '../../../services/settings_service.dart';
 import '../../global_widgets/block_button_widget.dart';
 import '../../global_widgets/tab_bar_widget.dart';
 import '../../global_widgets/text_field_widget.dart';
+import '../../patient/views/create_patient_view_from_Book_Doctor.dart';
 import '../controllers/book_doctor_controller.dart';
 import '../widgets/dropdownlist.dart';
 
@@ -19,6 +20,11 @@ class BookDoctorView extends GetView<BookDoctorController> {
   final RxString selectedPatternId = ''.obs;
   @override
   Widget build(BuildContext context) {
+    void refreshData() {
+      // Call the existing method that reloads your data
+      controller.refreshPatients(); // Replace with your actual method to fetch data
+      // Use this if you're using GetBuilder to update the UI
+    }
     return RefreshIndicator(
       onRefresh: () async {
         if (!Get.find<LaravelApiClient>().isLoading(task: 'getAllPatientsWithUserId')) {
@@ -65,8 +71,15 @@ class BookDoctorView extends GetView<BookDoctorController> {
                       MaterialButton(
                         padding: EdgeInsets.symmetric(
                             vertical: 10, horizontal: 14),
+
                         onPressed: () {
-                          Get.toNamed(Routes.PATIENT_CREATE);
+                          Get.to(() => CreatePatientViewFromBookDoctorView())?.then((result) {
+                            if (result != null && result['refresh'] == true) {
+                              // Trigger refresh logic
+                              refreshData();
+                            }
+                          });
+
                         },
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         color: Get.theme.colorScheme.secondary.withOpacity(0.1),
