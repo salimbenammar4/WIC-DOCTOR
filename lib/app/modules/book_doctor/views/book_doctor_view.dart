@@ -12,6 +12,7 @@ import '../../../services/settings_service.dart';
 import '../../global_widgets/block_button_widget.dart';
 import '../../global_widgets/tab_bar_widget.dart';
 import '../../global_widgets/text_field_widget.dart';
+import '../../patient/controllers/create_patient_controller.dart';
 import '../../patient/views/create_patient_view_from_Book_Doctor.dart';
 import '../controllers/book_doctor_controller.dart';
 import '../widgets/dropdownlist.dart';
@@ -41,13 +42,13 @@ class BookDoctorView extends GetView<BookDoctorController> {
         appBar: AppBar(
           title: Text(
             "Complete your Appointment".tr,
-            style: context.textTheme.titleLarge,
+            style: context.textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
           centerTitle: true,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Color(0xFF18167A),
           automaticallyImplyLeading: false,
           leading: new IconButton(
-            icon: new Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
+            icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
             onPressed: () => Get.back(),
           ),
           elevation: 0,
@@ -73,13 +74,18 @@ class BookDoctorView extends GetView<BookDoctorController> {
                             vertical: 10, horizontal: 14),
 
                         onPressed: () {
+                          // Ensure the controller is initialized
+                          if (!Get.isRegistered<CreatePatientController>()) {
+                            Get.put(CreatePatientController());
+                          }
+
+                          // Navigate to the view
                           Get.to(() => CreatePatientViewFromBookDoctorView())?.then((result) {
                             if (result != null && result['refresh'] == true) {
                               // Trigger refresh logic
                               refreshData();
                             }
                           });
-
                         },
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         color: Get.theme.colorScheme.secondary.withOpacity(0.1),
@@ -478,96 +484,40 @@ class BookDoctorView extends GetView<BookDoctorController> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10, bottom: 5, left: 20, right: 20),
-                    child: Text("Morning".tr, style: Get.textTheme.bodyMedium),
+                    padding: const EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
+                    child: Center(
+                      child: Text(
+                        "Available Times".tr,
+                        style: Get.textTheme.bodyMedium?.copyWith(
+                          fontSize: 20,  // Adjust the font size as needed
+                          fontWeight: FontWeight.bold, // Make it bolder if desired
+                        ),
+                      ),
+                    ),
                   ),
                   Obx(() {
-                    if (controller.morningTimes.isEmpty) {
-                      return TabBarLoadingWidget();
-                    } else {
-                      return TabBarWidget(
-                        initialSelectedId: "",
-                        tag: 'hours',
-                        tabs: List.generate(controller.morningTimes.length,
-                                (index) {
-                              final _time = controller.morningTimes.elementAt(index).elementAt(0);
-                              bool _available = controller.morningTimes.elementAt(index).elementAt(1) && !controller.morningTimes.elementAt(index).elementAt(2);
-                              if (_available) {
-                                return ChipWidget(
-                                  backgroundColor: Get.theme.colorScheme.secondary.withOpacity(0.2),
-                                  style: Get.textTheme.bodyLarge?.merge(TextStyle(color: Get.theme.colorScheme.secondary)),
-                                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                                  tag: 'hours',
-                                  text: DateFormat('HH:mm').format(DateTime.parse(_time).toLocal()),
-                                  id: _time, onSelected: (id) {
-                                  controller.appointment.update((val) {
-                                    val!.appointmentAt = DateTime.now().toLocal();
-                                    val.startAt = DateTime.parse(id).toLocal();
-                                    val.endsAt = val.startAt!.add(Duration(minutes: int.parse(controller.appointment.value.doctor?.sessionDuration ?? '30')));
-                                  });
-                                },
-                                );
-                              } else {
-                                return RawChip(
-                                  side: BorderSide(color: Colors.transparent),
-                                  elevation: 0,
-                                  label: Text(DateFormat('HH:mm').format(DateTime.parse(_time).toLocal()), style: Get.textTheme.bodySmall),
-                                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                                  backgroundColor: Get.theme.focusColor.withOpacity(0.1),
-                                  selectedColor: Get.theme.colorScheme.secondary,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                  showCheckmark: false,
-                                  pressElevation: 0,
-                                ).marginSymmetric(horizontal: 5);
-                              }
-                            }),
-                      );
-                    }
-                  }),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10, bottom: 5, left: 20, right: 20),
-                    child:
-                    Text("Afternoon".tr, style: Get.textTheme.bodyMedium),
-                  ),
-                  Obx(() {
-                    if (controller.afternoonTimes.isEmpty) {
-                      return TabBarLoadingWidget();
-                    } else {
-                      return TabBarWidget(
-                        initialSelectedId: "",
-                        tag: 'hours',
-                        tabs: List.generate(controller.afternoonTimes.length, (index) {
-                          final _time = controller.afternoonTimes.elementAt(index).elementAt(0);
-                          bool _available = controller.afternoonTimes.elementAt(index).elementAt(1) && !controller.afternoonTimes.elementAt(index).elementAt(2) ;
-                          if (_available) {
-                            return ChipWidget(
-                              backgroundColor: Get.theme.colorScheme.secondary.withOpacity(0.2),
-                              style: Get.textTheme.bodyLarge?.merge(TextStyle(color: Get.theme.colorScheme.secondary)),
-                              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                              tag: 'hours',
-                              text: DateFormat('HH:mm').format(DateTime.parse(_time).toLocal()),
-                              id: _time,
-                              onSelected: (id) {
-                                controller.appointment.update((val) {
-                                  val!.appointmentAt = DateTime.now().toLocal();
-                                  val.startAt = DateTime.parse(id).toLocal();
+                    // Combine all available times into one list
+                    List<List<dynamic>> allAvailableTimes = [
+                      ...controller.morningTimes,
+                      ...controller.afternoonTimes,
+                      ...controller.eveningTimes,
+                      ...controller.nightTimes
+                    ];
 
-                                  // Use the session duration dynamically
-                                  int sessionDuration = int.parse(controller.appointment.value.doctor?.sessionDuration ?? '15');
+                    // Debugging: Print the available times
+                    print("All Available Times: $allAvailableTimes");
 
-                                  // Calculate the end time based on the session duration
-                                  val.endsAt = val.startAt!.add(Duration(minutes: sessionDuration));
-                                });
-                              },
-                            );
-                          }
-                          else {
+                    // Show loading state until data is available
+                    if (controller.isLoading.value) {
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(3, (index) {
+                            // Display loading chips (you can customize the number)
                             return RawChip(
                               side: BorderSide(color: Colors.transparent),
                               elevation: 0,
-                              label: Text(DateFormat('HH:mm').format(DateTime.parse(_time).toLocal()), style: Get.textTheme.bodySmall),
+                              label: Text("Loading...", style: Get.textTheme.bodySmall),
                               padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
                               backgroundColor: Get.theme.focusColor.withOpacity(0.1),
                               selectedColor: Get.theme.colorScheme.secondary,
@@ -575,26 +525,32 @@ class BookDoctorView extends GetView<BookDoctorController> {
                               showCheckmark: false,
                               pressElevation: 0,
                             ).marginSymmetric(horizontal: 5);
-                          }
-                        }),
+                          }),
+                        ),
                       );
                     }
-                  }),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10, bottom: 5, left: 20, right: 20),
-                    child: Text("Soir".tr, style: Get.textTheme.bodyMedium),
-                  ),
-                  Obx(() {
-                    if (controller.eveningTimes.isEmpty) {
-                      return TabBarLoadingWidget();
-                    } else {
-                      return TabBarWidget(
-                        initialSelectedId: "",
-                        tag: 'hours',
-                        tabs: List.generate(controller.eveningTimes.length, (index) {
-                          final _time = controller.eveningTimes.elementAt(index).elementAt(0);
-                          bool _available = controller.eveningTimes.elementAt(index).elementAt(1) && !controller.eveningTimes.elementAt(index).elementAt(2);
+
+                    // Debugging: Print the result after checking the available times
+                    if (allAvailableTimes.isEmpty) {
+                      print("No available times found.");
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          "Sorry, this doctor is not available on the selected date.".tr,
+                          style: Get.textTheme.bodyMedium?.copyWith(color: Colors.red),
+                        ),
+                      );
+                    }
+
+                    // If there are available times, show them
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(allAvailableTimes.length, (index) {
+                          final _time = allAvailableTimes[index].elementAt(0);
+                          bool _available = allAvailableTimes[index].elementAt(1) && !allAvailableTimes[index].elementAt(2);
+
                           if (_available) {
                             return ChipWidget(
                               backgroundColor: Get.theme.colorScheme.secondary.withOpacity(0.2),
@@ -608,86 +564,23 @@ class BookDoctorView extends GetView<BookDoctorController> {
                                   val!.appointmentAt = DateTime.now().toLocal();
                                   val.startAt = DateTime.parse(id).toLocal();
 
-                                  // Use the session duration dynamically
                                   int sessionDuration = int.parse(controller.appointment.value.doctor?.sessionDuration ?? '15');
-
-                                  // Calculate the end time based on the session duration
                                   val.endsAt = val.startAt!.add(Duration(minutes: sessionDuration));
                                 });
                               },
                             );
                           } else {
-                            return RawChip(
-                              side: BorderSide(color: Colors.transparent),
-                              elevation: 0,
-                              label: Text(DateFormat('HH:mm').format(DateTime.parse(_time).toLocal()), style: Get.textTheme.bodySmall),
-                              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                              backgroundColor: Get.theme.focusColor.withOpacity(0.1),
-                              selectedColor: Get.theme.colorScheme.secondary,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              showCheckmark: false,
-                              pressElevation: 0,
-                            ).marginSymmetric(horizontal: 5);
+                            return Container(); // Return an empty container for unavailable times
                           }
                         }),
-                      );
-                    }
-                  }),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 5, left: 20, right: 20),
-                    child: Text("Night".tr, style: Get.textTheme.bodyMedium),
-                  ),
-                  Obx(() {
-                    if (controller.nightTimes.isEmpty) {
-                      return TabBarLoadingWidget();
-                    } else {
-                      return TabBarWidget(
-                        initialSelectedId: "",
-                        tag: 'hours',
-                        tabs: List.generate(controller.nightTimes.length, (index) {final _time = controller.nightTimes.elementAt(index).elementAt(0);
-                        bool _available = controller.nightTimes.elementAt(index).elementAt(1) && !controller.nightTimes.elementAt(index).elementAt(2);
-
-                        if (_available) {
-                          return ChipWidget(
-                            backgroundColor: Get.theme.colorScheme.secondary.withOpacity(0.2),
-                            style: Get.textTheme.bodyLarge?.merge(TextStyle(color: Get.theme.colorScheme.secondary)),
-                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                            tag: 'hours',
-                            text: DateFormat('HH:mm').format(DateTime.parse(_time).toLocal()),
-                            id: _time,
-                            onSelected: (id) {
-                              controller.appointment.update((val) {
-                                val!.appointmentAt = DateTime.now().toLocal();
-                                val.startAt = DateTime.parse(id).toLocal();
-
-                                // Use the session duration dynamically
-                                int sessionDuration = int.parse(controller.appointment.value.doctor?.sessionDuration ?? '15');
-
-                                // Calculate the end time based on the session duration
-                                val.endsAt = val.startAt!.add(Duration(minutes: sessionDuration));
-                              });
-                            },
-                          );
-                        } else {
-                          return RawChip(
-                            side: BorderSide(color: Colors.transparent),
-                            elevation: 0,
-                            label: Text(DateFormat('HH:mm').format(DateTime.parse(_time).toLocal()), style: Get.textTheme.bodySmall),
-                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                            backgroundColor: Get.theme.focusColor.withOpacity(0.1),
-                            selectedColor: Get.theme.colorScheme.secondary,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            showCheckmark: false,
-                            pressElevation: 0,
-                          ).marginSymmetric(horizontal: 5);
-                        }
-                        }),
-                      );
-                    }
+                      ),
+                    );
                   }),
                 ],
               ),
             ),
+
+
 
 
             Obx(() {

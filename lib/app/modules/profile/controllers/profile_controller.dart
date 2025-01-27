@@ -19,6 +19,7 @@ class ProfileController extends GetxController {
   final smsSent = "".obs;
   late GlobalKey<FormState> profileForm;
   late UserRepository _userRepository;
+  var isVerifying = false.obs;
 
   ProfileController() {
     _userRepository = new UserRepository();

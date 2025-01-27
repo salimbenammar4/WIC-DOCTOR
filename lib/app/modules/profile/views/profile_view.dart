@@ -27,7 +27,7 @@ class ProfileView extends GetView<ProfileController> {
             style: context.textTheme.titleLarge?.copyWith(color: Colors.white), // Set title color to white
           ),
           centerTitle: true,
-          backgroundColor: Color(0xFF5C6BC0), // Set background color using the hex code
+          backgroundColor: Color(0xFF18167A), // Set background color using the hex code
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios, color: Colors.white), // Set back icon color to white

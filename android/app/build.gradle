@@ -57,6 +57,17 @@ android {
         }
     }
 
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
+    buildTypes {
+        release {
+            ndk.debugSymbolLevel = 'FULL'
+        }
+    }
+
     buildTypes {
         release {
             signingConfig signingConfigs.release

@@ -15,14 +15,14 @@ class NotificationsView extends GetView<NotificationsController> {
       appBar: AppBar(
         title: Text(
           "Notifications".tr,
-          style: Get.textTheme.titleLarge,
+          style: Get.textTheme.titleLarge?.copyWith(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFF18167A),
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: new IconButton(
-          icon: new Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
+          icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => {Get.back()},
         ),
       ),

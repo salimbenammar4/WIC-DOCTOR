@@ -28,6 +28,7 @@ class AuthController extends GetxController {
   final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
   Rx<String> password=''.obs;
   Rx<String>passwordConfirmation=''.obs;
+  var isVerifying = false.obs;
 
   AuthController() {
     loginFormKey = new GlobalKey<FormState>();
