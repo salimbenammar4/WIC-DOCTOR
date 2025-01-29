@@ -27,25 +27,25 @@ class FirebaseProvider extends GetxService {
       String errorMessage;
       switch (e.code) {
         case 'invalid-email':
-          errorMessage = "Invalid email address. Please enter a valid email.".tr;
+          errorMessage = "Invalid email address. Please enter a valid email.";
           break;
         case 'user-disabled':
-          errorMessage = "This account has been disabled. Please contact support.".tr;
+          errorMessage = "This account has been disabled. Please contact support.";
           break;
         case 'user-not-found':
-          errorMessage = "No account found with this email. Please sign up first.".tr;
+          errorMessage = "No account found with this email. Please sign up first.";
           break;
         case 'wrong-password':
-          errorMessage = "Incorrect password. Please try again.".tr;
+          errorMessage = "Incorrect password. Please try again.";
           break;
         case 'too-many-requests':
-          errorMessage = "Too many login attempts. Please try again later.".tr;
+          errorMessage = "Too many login attempts. Please try again later.";
           break;
         case 'network-request-failed':
-          errorMessage = "Network error. Please check your internet connection and try again.".tr;
+          errorMessage = "Network error. Please check your internet connection and try again.";
           break;
         default:
-          errorMessage = "An unexpected error occurred. Please try again.".tr;
+          errorMessage = "An unexpected error occurred. Please try again.";
       }
 
       // Use the global key to show the snackbar
@@ -80,22 +80,22 @@ class FirebaseProvider extends GetxService {
       String errorMessage;
       switch (e.code) {
         case 'email-already-in-use':
-          errorMessage = "This email is already registered. Please log in instead.".tr;
+          errorMessage = "This email is already registered. Please log in instead.";
           break;
         case 'invalid-email':
-          errorMessage = "Invalid email address. Please enter a valid email.".tr;
+          errorMessage = "Invalid email address. Please enter a valid email.";
           break;
         case 'weak-password':
-          errorMessage = "The password is too weak. Please choose a stronger password.".tr;
+          errorMessage = "The password is too weak. Please choose a stronger password.";
           break;
         case 'operation-not-allowed':
-          errorMessage = "Email/password sign-up is not enabled. Please contact support.".tr;
+          errorMessage = "Email/password sign-up is not enabled. Please contact support.";
           break;
         case 'network-request-failed':
-          errorMessage = "Network error. Please check your connection and try again.".tr;
+          errorMessage = "Network error. Please check your connection and try again.";
           break;
         default:
-          errorMessage = "An unexpected error occurred. Please try again.".tr;
+          errorMessage = "An unexpected error occurred. Please try again.";
       }
 
       // Show snackbar using a global key
@@ -112,58 +112,14 @@ class FirebaseProvider extends GetxService {
 
   Future<void> verifyPhone(String smsCode) async {
     try {
-      final fba.AuthCredential credential = fba.PhoneAuthProvider.credential(
-        verificationId: Get.find<AuthService>().user.value.verificationId,
-        smsCode: smsCode,
-      );
+      final fba.AuthCredential credential = fba.PhoneAuthProvider.credential(verificationId: Get.find<AuthService>().user.value.verificationId, smsCode: smsCode);
       await fba.FirebaseAuth.instance.signInWithCredential(credential);
       Get.find<AuthService>().user.value.verifiedPhone = true;
     } catch (e) {
       Get.find<AuthService>().user.value.verifiedPhone = false;
-
-      if (e is fba.FirebaseAuthException) {
-        if (e.code == 'invalid-verification-code') {
-          // Invalid OTP error
-          Get.snackbar(
-            "Invalid OTP".tr,
-            "The OTP code entered is incorrect. Please try again.".tr,
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-          );
-        } else if (e.code == 'network-request-failed') {
-          // Network error
-          Get.snackbar(
-            "Network Error".tr,
-            "Please check your internet connection and try again.".tr,
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.orange,
-            colorText: Colors.white,
-          );
-        } else {
-          // Other Firebase authentication error
-          Get.snackbar(
-            "Authentication Error".tr,
-            "There was an issue verifying your phone. Please try again later.".tr,
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-          );
-        }
-      } else {
-        // General exception
-        Get.snackbar(
-          "Verification Failed".tr,
-          "Something went wrong. Please try again.".tr,
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-      }
       throw Exception(e.toString());
     }
   }
-
 
   Future<void> sendCodeToPhone() async {
     try {

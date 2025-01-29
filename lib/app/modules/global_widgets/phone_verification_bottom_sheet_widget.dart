@@ -12,6 +12,7 @@ import 'text_field_widget.dart';
 class PhoneVerificationBottomSheetWidget extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
+    // TODO add loading while verification
     return Container(
       decoration: BoxDecoration(
         color: Get.theme.primaryColor,
@@ -32,6 +33,13 @@ class PhoneVerificationBottomSheetWidget extends GetView<ProfileController> {
               color: Get.theme.focusColor.withOpacity(0.1),
               borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
             ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Get.theme.focusColor.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(3),
+              ),
+              //child: SizedBox(height: 1,),
+            ),
           ),
           Text(
             "We sent the OTP code to your phone, please check it and enter below".tr,
@@ -44,28 +52,18 @@ class PhoneVerificationBottomSheetWidget extends GetView<ProfileController> {
             style: Get.textTheme.headlineMedium?.merge(TextStyle(letterSpacing: 8)),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.number,
-            onChanged: (input) {
-              controller.smsSent.value = input;
-              // Automatically update the button state based on OTP length
-            },
+            onChanged: (input) => controller.smsSent.value = input,
           ),
-          Obx(() {
-            bool isButtonDisabled = controller.smsSent.value.length != 6; // Disable if OTP is not 6 digits
-            return BlockButtonWidget(
-              onPressed: isButtonDisabled || controller.isVerifying.value
-                  ? null
-                  : () async {
-                controller.isVerifying.value = true;  // Disable button after pressing
-                await controller.verifyPhone();
-                controller.isVerifying.value = false;  // Re-enable after verification
-              },
-              color: Get.theme.colorScheme.secondary,
-              text: Text(
-                "Verify".tr,
-                style: Get.textTheme.titleLarge?.merge(TextStyle(color: Get.theme.primaryColor)),
-              ),
-            ).paddingSymmetric(vertical: 30, horizontal: 20);
-          }),
+          BlockButtonWidget(
+            onPressed: () async {
+              await controller.verifyPhone();
+            },
+            color: Get.theme.colorScheme.secondary,
+            text: Text(
+              "Verify".tr,
+              style: Get.textTheme.titleLarge?.merge(TextStyle(color: Get.theme.primaryColor)),
+            ),
+          ).paddingSymmetric(vertical: 30, horizontal: 20),
         ],
       ),
     );

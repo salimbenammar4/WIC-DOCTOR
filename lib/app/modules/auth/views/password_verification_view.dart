@@ -63,6 +63,7 @@ class PasswordVerificationView extends GetView<AuthController> {
                             style: Get.textTheme.bodySmall?.merge(TextStyle(color: Get.theme.primaryColor)),
                             textAlign: TextAlign.center,
                           ),
+                          // Text("Fill the following credentials to login your account", style: Get.textTheme.bodySmall?.merge(TextStyle(color: Get.theme.primaryColor))),
                         ],
                       ),
                     ),
@@ -103,6 +104,7 @@ class PasswordVerificationView extends GetView<AuthController> {
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
                         onChanged: (input) => controller.smsSent.value = input,
+                        // iconData: Icons.add_to_home_screen_outlined,
                       ),
                       BlockButtonWidget(
                         onPressed: () async {

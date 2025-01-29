@@ -19,7 +19,7 @@ class SpecialitiesView extends GetView<SpecialitiesController> {
             style: Get.textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
           centerTitle: true,
-          backgroundColor: Color(0xFF18167A),
+          backgroundColor: Color(0xFF5C6BC0),
           elevation: 0,
           automaticallyImplyLeading: false,
           leading: new IconButton(
@@ -34,7 +34,6 @@ class SpecialitiesView extends GetView<SpecialitiesController> {
             Get.find<LaravelApiClient>().unForceRefresh();
           },
           child: ListView(
-            padding: const EdgeInsets.only(top: 16.0),
             primary: true,
             children: [
               HomeSearchBarWidget(),

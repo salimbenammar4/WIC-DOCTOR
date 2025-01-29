@@ -51,7 +51,7 @@ class MessagesView extends GetView<MessagesController> {
           style: Get.textTheme.titleLarge?.copyWith(color: Colors.white), // Title color to white
         ),
         centerTitle: true,
-        backgroundColor: Color(0xFF18167A), // Hex color as appBar background
+        backgroundColor: Color(0xFF5C6BC0), // Hex color as appBar background
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: IconButton(
