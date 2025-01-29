@@ -138,20 +138,6 @@ class SearchServicesListItemWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          if (_doctor.getOldPrice > 0)
-                            Ui.getPrice(
-                              _doctor.getOldPrice,
-                              style: Get.textTheme.bodyLarge?.merge(TextStyle(color: Get.theme.focusColor, decoration: TextDecoration.lineThrough)),
-                            ),
-                          Ui.getPrice(
-                            _doctor.getPrice,
-                            style: Get.textTheme.bodyMedium?.merge(TextStyle(color: Get.theme.colorScheme.secondary)),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                   Row(
@@ -183,7 +169,7 @@ class SearchServicesListItemWidget extends StatelessWidget {
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
-                          _doctor.clinic.address?.address ?? '',
+                          _doctor.address?.address ?? '',
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,

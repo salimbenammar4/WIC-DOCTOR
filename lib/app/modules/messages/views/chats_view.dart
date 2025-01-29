@@ -57,7 +57,7 @@ class ChatsView extends GetView<MessagesController> {
     }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF5C6BC0),
+        backgroundColor: Color(0xFF18167A),
         elevation: 0,
         centerTitle: true,
         leading: IconButton(

@@ -11,6 +11,7 @@ import '../../../repositories/doctor_repository.dart';
 import '../../../routes/app_routes.dart';
 import '../../../services/auth_service.dart';
 import '../../favorites/controllers/favorites_controller.dart';
+import '../../messages/controllers/messages_controller.dart';
 import 'review_controller.dart';
 class DoctorController extends GetxController {
   final doctor = Doctor().obs;
@@ -111,10 +112,25 @@ class DoctorController extends GetxController {
   }
 
   void startChat() {
+    var chatController = Get.find<MessagesController>();
     var _doctors = <User>[].obs;
     print(doctor.value.user);
+
+    // Add the doctor to the list
     _doctors.add(doctor.value.user);
-    Message _message = new Message(_doctors, name:  doctor.value.name);
-    Get.toNamed(Routes.CHAT, arguments: _message);
+
+    // Check if an existing chat with this doctor exists
+    Message? existingChat = chatController.messages.firstWhereOrNull(
+          (chat) => chat.users.any((u) => u.id == doctor.value.user.id),
+    );
+
+    if (existingChat != null) {
+      // Open existing chat
+      Get.toNamed(Routes.CHAT, arguments: existingChat);
+    } else {
+      // Create a new chat if none exists
+      Message _message = Message(_doctors, name: doctor.value.name);
+      Get.toNamed(Routes.CHAT, arguments: _message);
+    }
   }
 }

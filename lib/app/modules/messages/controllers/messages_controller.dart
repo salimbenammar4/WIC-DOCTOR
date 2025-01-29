@@ -205,27 +205,32 @@ class MessagesController extends GetxController {
         // Step 1: Upload the file and get the download URL
         String fileUrl = await _chatRepository.uploadFile(selectedFile);
 
-        // Step 2: Create a Chat object for the file attachment
+        // Step 2: Ensure the message has an ID (if new, generate one)
+        if (_message.id == null || _message.id!.isEmpty) {
+          _message.id = FirebaseFirestore.instance.collection('messages').doc().id;
+        }
+
+        // Step 3: Create a Chat object for the file attachment
         Chat _chat = Chat(
-            fileUrl,
-            DateTime.now().millisecondsSinceEpoch,
-            _authService.user.value.id,
-            _authService.user.value
+          fileUrl,
+          DateTime.now().millisecondsSinceEpoch,
+          _authService.user.value.id,
+          _authService.user.value,
         );
 
-        // Step 3: Update the message object
-        _message.lastMessage = "File: ${result.files.single.name}";  // Display file name as the message
-        _message.users.insert(0, _authService.user.value);  // Add the current user
+        // Step 4: Update the message object
+        _message.lastMessage = "File: ${result.files.single.name}";
+        _message.users.insert(0, _authService.user.value);
         _message.lastMessageTime = _chat.time;
         _message.readByUsers = [_authService.user.value.id];
 
         message.value = _message;
 
-        // Step 4: Save the message and chat to Firestore
+        // Step 5: Save the message and chat to Firestore
         await _chatRepository.createMessage(_message);
         await _chatRepository.addMessage(_message, _chat);
 
-        // Step 5: Send a notification to other users
+        // Step 6: Send a notification to other users
         List<User> _users = List.from(_message.users);
         _users.removeWhere((element) => element.id == _authService.user.value.id);
         _notificationRepository.sendNotification(
@@ -236,8 +241,8 @@ class MessagesController extends GetxController {
           _message.id,
         );
 
-        // Step 6: Refresh the chat messages
-        refreshMessages();
+        // Step 7: Refresh the chat messages
+        listenForMessages();
 
       } catch (e) {
         Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
@@ -246,6 +251,7 @@ class MessagesController extends GetxController {
       }
     }
   }
+
 
 
 

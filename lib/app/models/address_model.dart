@@ -12,24 +12,30 @@ class Address extends Model {
   double? _longitude;
   bool? _isDefault;
   String? _userId;
+  String? _ville;
 
-  Address({String? id, String? description, String? address, double? latitude, double? longitude, String? userId, bool? isDefault}) {
+  Address({String? id, String? description, String? address, double? latitude, double? longitude, String? userId, bool? isDefault, String? ville}) {
     _userId = userId;
     _longitude = longitude;
     _latitude = latitude;
     _address = address;
     _description = description;
+    _ville=ville;
     this.id = id;
+
   }
 
   Address.fromJson(Map<String, dynamic>? json) {
     super.fromJson(json);
     if (json!=null && json['description']!=null){
     _description = stringFromJson(jsonDecode(json['description']), 'fr');}
-    _address = stringFromJson(json, 'address');
+    if (json!=null && json['address']!=null){
+    _address = stringFromJson(json, 'address');}
     _latitude = doubleFromJson(json, 'latitude', decimal: 10);
     _longitude = doubleFromJson(json, 'longitude', decimal: 10);
     _isDefault = boolFromJson(json, 'default');
+    if (json!=null && json['ville']!=null){
+    _ville = stringFromJson(jsonDecode(json['ville']), 'fr');}
     _userId = stringFromJson(json, 'user_id');
   }
 
@@ -37,6 +43,12 @@ class Address extends Model {
 
   set address(String? value) {
     _address = value;
+  }
+
+  String get ville => _ville ?? '';
+
+  set ville(String? value) {
+    _ville = value;
   }
 
 
@@ -105,6 +117,9 @@ class Address extends Model {
     }
     if (this._address != null) {
       data['address'] = this._address;
+    }
+    if (this._ville != null) {
+      data['ville'] = this._ville;
     }
     if (this._latitude != null) {
       data['latitude'] = this._latitude;

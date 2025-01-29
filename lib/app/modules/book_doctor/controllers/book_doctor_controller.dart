@@ -179,15 +179,19 @@ class BookDoctorController extends GetxController {
 
   Future getTimes({DateTime? date}) async {
     try {
+      isLoading.value = true; // Start loading
       nightTimes.clear();
       morningTimes.clear();
       afternoonTimes.clear();
       eveningTimes.clear();
-      Get.log("aaaaaaaaaaaaaaaaaaaaaaaaaaassssssssss");
-      if (date != null){
+
+      if (date != null) {
         this.selectedDate = date;
       }
-      List<dynamic> times = await _doctorRepository.getAvailabilityHours(this.appointment.value.doctor!.id, date ?? DateTime.now(), this.appointment.value.online);
+
+      List<dynamic> times = await _doctorRepository.getAvailabilityHours(
+          this.appointment.value.doctor!.id, date ?? DateTime.now(), this.appointment.value.online);
+
       for (var timeEntry in times) {
         final dateTime = DateTime.parse(timeEntry.elementAt(0)).toLocal();
         final hour = dateTime.hour;
@@ -203,6 +207,8 @@ class BookDoctorController extends GetxController {
       }
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    } finally {
+      isLoading.value = false; // Stop loading
     }
   }
 
@@ -319,5 +325,3 @@ class BookDoctorController extends GetxController {
 
 
 }
-
-

@@ -16,17 +16,20 @@ class SearchView extends GetView<searchController.SearchController> {
           style: context.textTheme.titleLarge?.copyWith(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xFF5C6BC0),
+        backgroundColor: Color(0xFF18167A),
         automaticallyImplyLeading: false,
         leading: new IconButton(
-          icon: new Icon(Icons.arrow_back_ios, color: Colors.white ),
+          icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Get.back(),
         ),
         elevation: 0,
       ),
       body: ListView(
         children: [
-          buildSearchBar(),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0), // Add padding here
+            child: buildSearchBar(),
+          ),
           SearchServicesListWidget(doctors: controller.doctors),
         ],
       ),
@@ -103,3 +106,4 @@ class SearchView extends GetView<searchController.SearchController> {
     );
   }
 }
+

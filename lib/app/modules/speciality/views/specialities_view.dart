@@ -19,7 +19,7 @@ class SpecialitiesView extends GetView<SpecialitiesController> {
             style: Get.textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
           centerTitle: true,
-          backgroundColor: Color(0xFF5C6BC0),
+          backgroundColor: Color(0xFF18167A),
           elevation: 0,
           automaticallyImplyLeading: false,
           leading: new IconButton(
@@ -36,46 +36,55 @@ class SpecialitiesView extends GetView<SpecialitiesController> {
           child: ListView(
             primary: true,
             children: [
-              HomeSearchBarWidget(),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0), // Add padding here
+                child: HomeSearchBarWidget(),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 10),
-                child: Row(children: [
-                  Expanded(
-                    child: Text(
-                      "Specialities of doctors".tr,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          controller.layout.value = SpecialitiesLayout.LIST;
-                        },
-                        icon: Obx(() {
-                          return Icon(
-                            Icons.format_list_bulleted,
-                            color: controller.layout.value == SpecialitiesLayout.LIST ? Get.theme.colorScheme.secondary : Get.theme.focusColor,
-                          );
-                        }),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Specialities of doctors".tr,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      IconButton(
-                        onPressed: () {
-                          controller.layout.value = SpecialitiesLayout.GRID;
-                        },
-                        icon: Obx(() {
-                          return Icon(
-                            Icons.apps,
-                            color: controller.layout.value == SpecialitiesLayout.GRID ? Get.theme.colorScheme.secondary : Get.theme.focusColor,
-                          );
-                        }),
-                      )
-                    ],
-                  ),
-                ]),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: () {
+                            controller.layout.value = SpecialitiesLayout.LIST;
+                          },
+                          icon: Obx(() {
+                            return Icon(
+                              Icons.format_list_bulleted,
+                              color: controller.layout.value == SpecialitiesLayout.LIST
+                                  ? Get.theme.colorScheme.secondary
+                                  : Get.theme.focusColor,
+                            );
+                          }),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            controller.layout.value = SpecialitiesLayout.GRID;
+                          },
+                          icon: Obx(() {
+                            return Icon(
+                              Icons.apps,
+                              color: controller.layout.value == SpecialitiesLayout.GRID
+                                  ? Get.theme.colorScheme.secondary
+                                  : Get.theme.focusColor,
+                            );
+                          }),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
               Obx(() {
                 return Offstage(
@@ -83,17 +92,17 @@ class SpecialitiesView extends GetView<SpecialitiesController> {
                   child: controller.specialities.isEmpty
                       ? CircularLoadingWidget(height: 400)
                       : MasonryGridView.count(
-                          primary: false,
-                          shrinkWrap: true,
-                          crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          itemCount: controller.specialities.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return SpecialityGridItemWidget(speciality: controller.specialities.elementAt(index), heroTag: "heroTag");
-                          },
-                          mainAxisSpacing: 15.0,
-                          crossAxisSpacing: 15.0,
-                        ),
+                    primary: false,
+                    shrinkWrap: true,
+                    crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    itemCount: controller.specialities.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SpecialityGridItemWidget(speciality: controller.specialities.elementAt(index), heroTag: "heroTag");
+                    },
+                    mainAxisSpacing: 15.0,
+                    crossAxisSpacing: 15.0,
+                  ),
                 );
               }),
               Obx(() {
@@ -102,39 +111,40 @@ class SpecialitiesView extends GetView<SpecialitiesController> {
                   child: controller.specialities.isEmpty
                       ? CircularLoadingWidget(height: 400)
                       : ListView.separated(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          primary: false,
-                          itemCount: controller.specialities.length,
-                          separatorBuilder: (context, index) {
-                            return SizedBox(height: 10);
-                          },
-                          itemBuilder: (context, index) {
-                            return SpecialityListItemWidget(
-                              heroTag: 'speciality_list',
-
-                              speciality: controller.specialities.elementAt(index),
-                            );
-                          },
-                        ),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: controller.specialities.length,
+                    separatorBuilder: (context, index) {
+                      return SizedBox(height: 10);
+                    },
+                    itemBuilder: (context, index) {
+                      return SpecialityListItemWidget(
+                        heroTag: 'speciality_list',
+                        speciality: controller.specialities.elementAt(index),
+                      );
+                    },
+                  ),
                 );
               }),
-               Container(
-                 child: ListView(
-                     primary: false,
-                     shrinkWrap: true,
-                     children: List.generate(controller.specialities.length, (index) {
-                       return Obx(() {
-                         var _speciality = controller.specialities.elementAt(index);
-                         return Padding(
-                           padding: const EdgeInsetsDirectional.only(start: 20),
-                           child: Text(_speciality.name),
-                        );
-                       });
-                    })),
-               ),
+              Container(
+                child: ListView(
+                  primary: false,
+                  shrinkWrap: true,
+                  children: List.generate(controller.specialities.length, (index) {
+                    return Obx(() {
+                      var _speciality = controller.specialities.elementAt(index);
+                      return Padding(
+                        padding: const EdgeInsetsDirectional.only(start: 20),
+                        child: Text(_speciality.name),
+                      );
+                    });
+                  }),
+                ),
+              ),
             ],
           ),
         ));
   }
 }
+

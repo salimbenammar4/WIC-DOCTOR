@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../global_widgets/tab_bar_widget.dart';
 import '../controllers/book_doctor_controller.dart';
 
 class BookDoctorBinding extends Bindings {
@@ -8,5 +9,6 @@ class BookDoctorBinding extends Bindings {
     Get.lazyPut<BookDoctorController>(
       () => BookDoctorController(),
     );
+    Get.put(TabBarController());
   }
 }
