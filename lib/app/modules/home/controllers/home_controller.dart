@@ -74,6 +74,7 @@ class HomeController extends GetxController {
   Future getSpecialities() async {
     try {
       specialities.assignAll(await _specialityRepository.getAllParents());
+
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
@@ -89,7 +90,10 @@ class HomeController extends GetxController {
 
   Future getRecommendedDoctors() async {
     try {
-      doctors.assignAll(await _doctorRepository.getRecommended());
+      final abc=await _doctorRepository.getRecommended();
+      doctors.assignAll(abc);
+      print("abcabcabcb");
+      print(abc);
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
@@ -109,4 +113,16 @@ class HomeController extends GetxController {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
   }
+  Future<void> getDoctorSubSpecialities(String doctorId) async {
+    try {
+      List<Speciality> subspecialities = await _specialityRepository.getSubSpecialities(doctorId);
+      doctors.firstWhere((doctor) => doctor.id == doctorId).subSpecialities = subspecialities;
+      update(); // Notify GetX to rebuild the UI
+    } catch (e) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: "Failed to fetch subspecialities: $e"));
+    }
+  }
+
+
+
 }

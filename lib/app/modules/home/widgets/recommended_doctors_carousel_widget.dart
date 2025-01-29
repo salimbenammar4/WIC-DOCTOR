@@ -26,11 +26,11 @@ class RecommendedDoctorsCarouselWidget extends GetWidget<HomeController> {
               },
               child: Container(
                 width: 220,
-                margin: EdgeInsetsDirectional.only(end: 20, start: index == 0 ? 20 : 0, top: 20, bottom: 10),
+                margin: EdgeInsetsDirectional.only(end: 20, start: index == 0 ? 10 : 0, top: 20, bottom: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   boxShadow: [
-                    BoxShadow(color: Get.theme.focusColor.withOpacity(0.1), blurRadius: 10, offset: Offset(0, 5)),
+                    BoxShadow(color: Get.theme.focusColor.withOpacity(0.1), blurRadius: 10, offset: Offset(0, 1)),
                   ],
                 ),
                 child: Column(
@@ -109,19 +109,25 @@ class RecommendedDoctorsCarouselWidget extends GetWidget<HomeController> {
                           ),
                           SizedBox(height: 5), // Space between old price and "Start from"
 
-                          Text(
-                            "Start from".tr,
-                            style: Get.textTheme.bodySmall,
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Color(0xFF18167A),
+                                size: 18,
+                              ),
+                              SizedBox(width: 5), // Space between the icon and the text
+                              Expanded( // This allows the text to take up the remaining space
+                                child: Text(
+                                  _doctor.address!.ville,
+                                  style: Get.textTheme.bodySmall,
+                                  overflow: TextOverflow.ellipsis, // Ensure long addresses are truncated
+                                  maxLines: 1, // Limit to a single line
+                                ),
+                              ),
+                            ],
                           ),
-                          if (_doctor.getOldPrice > 0)
-                            Ui.getPrice(
-                              _doctor.getOldPrice,
-                              style: Get.textTheme.bodyLarge?.merge(TextStyle(color: Get.theme.focusColor, decoration: TextDecoration.lineThrough)),
-                            ),
-                          Ui.getPrice(
-                            _doctor.getPrice,
-                            style: Get.textTheme.bodyMedium?.merge(TextStyle(color: Get.theme.colorScheme.secondary)),
-                          ),
+
                         ],
                       ),
                     ),

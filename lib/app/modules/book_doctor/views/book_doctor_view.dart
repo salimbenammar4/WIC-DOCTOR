@@ -580,9 +580,6 @@ class BookDoctorView extends GetView<BookDoctorController> {
               ),
             ),
 
-
-
-
             Obx(() {
               if (controller.patterns.isEmpty) {
                 return Container(

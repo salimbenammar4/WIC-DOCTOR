@@ -77,22 +77,17 @@ class MessagesController extends GetxController {
   Future listenForMessages() async {
     isLoading.value = true;
     isDone.value = false;
-    Stream<QuerySnapshot> _userMessages;
 
-    if (lastDocument.value == null) {
-      _userMessages = _chatRepository.getUserMessages(_authService.user.value.id);
-    } else {
-      _userMessages = _chatRepository.getUserMessagesStartAt(_authService.user.value.id, lastDocument.value!);
-    }
+    Stream<QuerySnapshot> _userMessages = _chatRepository.getUserMessages(_authService.user.value.id);
 
     _userMessages.listen((QuerySnapshot query) {
       if (query.docs.isNotEmpty) {
-        query.docs.forEach((element) {
+        for (var element in query.docs) {
           Message newMessage = Message.fromDocumentSnapshot(element);
           if (!messages.any((msg) => msg.id == newMessage.id)) {
             messages.add(newMessage);
           }
-        });
+        }
         lastDocument.value = query.docs.last;
       } else {
         isDone.value = true;
@@ -205,7 +200,12 @@ class MessagesController extends GetxController {
         // Step 1: Upload the file and get the download URL
         String fileUrl = await _chatRepository.uploadFile(selectedFile);
 
-        // Step 2: Create a Chat object for the file attachment
+        // Step 2: Ensure the message ID is valid
+        if (_message.id == null || _message.id.isEmpty) {
+          _message.id = FirebaseFirestore.instance.collection('messages').doc().id;
+        }
+
+        // Step 3: Create a Chat object for the file attachment
         Chat _chat = Chat(
             fileUrl,
             DateTime.now().millisecondsSinceEpoch,
@@ -213,19 +213,19 @@ class MessagesController extends GetxController {
             _authService.user.value
         );
 
-        // Step 3: Update the message object
-        _message.lastMessage = "File: ${result.files.single.name}";  // Display file name as the message
-        _message.users.insert(0, _authService.user.value);  // Add the current user
+        // Step 4: Update the message object
+        _message.lastMessage = "File: ${result.files.single.name}"; // Display file name as the message
+        _message.users.insert(0, _authService.user.value); // Add the current user
         _message.lastMessageTime = _chat.time;
         _message.readByUsers = [_authService.user.value.id];
 
         message.value = _message;
 
-        // Step 4: Save the message and chat to Firestore
+        // Step 5: Save the message and chat to Firestore
         await _chatRepository.createMessage(_message);
         await _chatRepository.addMessage(_message, _chat);
 
-        // Step 5: Send a notification to other users
+        // Step 6: Send a notification to other users
         List<User> _users = List.from(_message.users);
         _users.removeWhere((element) => element.id == _authService.user.value.id);
         _notificationRepository.sendNotification(
@@ -235,8 +235,8 @@ class MessagesController extends GetxController {
           "File: ${result.files.single.name}",
           _message.id,
         );
-
-        // Step 6: Refresh the chat messages
+        listenForMessages();
+        // Step 7: Refresh the chat messages
         refreshMessages();
 
       } catch (e) {
@@ -246,6 +246,7 @@ class MessagesController extends GetxController {
       }
     }
   }
+
 
 
 

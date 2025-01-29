@@ -8,6 +8,7 @@ import '../controllers/messages_controller.dart';
 import '../widgets/message_item_widget.dart';
 
 class MessagesView extends GetView<MessagesController> {
+  final MessagesController controller = Get.put(MessagesController());
   // This widget manages the list of messages and ensures optimal UI updates.
   Widget conversationsList() {
     return ListView.separated(

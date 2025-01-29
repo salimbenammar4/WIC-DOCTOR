@@ -12,13 +12,15 @@ class Address extends Model {
   double? _longitude;
   bool? _isDefault;
   String? _userId;
+  String? _ville;
 
-  Address({String? id, String? description, String? address, double? latitude, double? longitude, String? userId, bool? isDefault}) {
+  Address({String? id, String? description, String? address, double? latitude, double? longitude, String? userId, bool? isDefault, String? ville}) {
     _userId = userId;
     _longitude = longitude;
     _latitude = latitude;
     _address = address;
     _description = description;
+    _ville=ville;
     this.id = id;
   }
 
@@ -26,11 +28,12 @@ class Address extends Model {
     super.fromJson(json);
     if (json!=null && json['description']!=null){
     _description = stringFromJson(jsonDecode(json['description']), 'fr');}
-    _address = stringFromJson(json, 'address');
+    _address = stringFromJson(jsonDecode(json?['address']), 'fr');
     _latitude = doubleFromJson(json, 'latitude', decimal: 10);
     _longitude = doubleFromJson(json, 'longitude', decimal: 10);
     _isDefault = boolFromJson(json, 'default');
     _userId = stringFromJson(json, 'user_id');
+    _ville = stringFromJson(jsonDecode(json?['ville']), 'fr');
   }
 
   String get address => _address ?? '';
@@ -38,7 +41,11 @@ class Address extends Model {
   set address(String? value) {
     _address = value;
   }
+  String get ville => _ville ?? '';
 
+  set ville(String? value) {
+    _ville = value;
+  }
 
   String get description {
     if (hasDescription()) return _description!;

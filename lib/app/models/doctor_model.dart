@@ -97,7 +97,10 @@ class Doctor extends Model {
     _clinic = objectFromJson(json, 'clinic', (value) => Clinic.fromJson(value));
     _user = objectFromJson(json, 'user', (value) => User.fromJson(value));
     _sessionDuration = stringFromJson(json, 'session_duration');
+    print("AAAAAAADDDDDRESSSSSS");
+    print(Address.fromJson(json?['address']));
     _address = json?['address'] != null ? Address.fromJson(json?['address']) : null;
+    print("1474185285");
     super.fromJson(json);
   }
 

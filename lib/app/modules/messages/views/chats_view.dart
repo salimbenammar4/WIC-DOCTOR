@@ -20,12 +20,14 @@ class ChatsView extends GetView<MessagesController> {
   Widget chatList() {
     return Obx(
           () {
-        if (controller.chats.isEmpty) {
-          return CircularLoadingWidget(
-            height: Get.height,
-            onCompleteText: "Type a message to start chat!".tr,
-          );
-        } else {
+            if (controller.chats.isEmpty) {
+              return Center(
+                child: Text(
+                  "Type a message to start chat!".tr,
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              );
+            }else {
           return ListView.builder(
               key: _myListKey,
               reverse: true,
@@ -57,7 +59,7 @@ class ChatsView extends GetView<MessagesController> {
     }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF5C6BC0),
+        backgroundColor: Color(0xFF18167A),
         elevation: 0,
         centerTitle: true,
         leading: IconButton(

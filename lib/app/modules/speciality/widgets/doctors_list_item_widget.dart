@@ -23,7 +23,7 @@ class DoctorsListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Doctor Address: ${_doctor.address?.description}");
+    print("Doctor Address: ${_doctor.address!.ville}");
     return GestureDetector(
       onTap: () {
         Get.toNamed(Routes.DOCTOR, arguments: {'doctor': _doctor, 'heroTag': 'doctor_list_item'});
@@ -193,7 +193,7 @@ class DoctorsListItemWidget extends StatelessWidget {
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
-                          _doctor.address?.description ?? "No description available",
+                          _doctor.address!.ville ?? "No description available",
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,

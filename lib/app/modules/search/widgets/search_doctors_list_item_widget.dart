@@ -183,7 +183,7 @@ class SearchServicesListItemWidget extends StatelessWidget {
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
-                          _doctor.clinic.address?.address ?? '',
+                          _doctor.address!.ville,
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,

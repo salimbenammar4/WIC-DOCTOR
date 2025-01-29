@@ -16,7 +16,7 @@ class SearchView extends GetView<searchController.SearchController> {
           style: context.textTheme.titleLarge?.copyWith(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xFF5C6BC0),
+        backgroundColor: Color(0xFF18167A),
         automaticallyImplyLeading: false,
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back_ios, color: Colors.white ),

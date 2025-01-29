@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/ui.dart';
 import '../../../models/doctor_model.dart';
@@ -117,4 +118,7 @@ class DoctorController extends GetxController {
     Message _message = new Message(_doctors, name:  doctor.value.name);
     Get.toNamed(Routes.CHAT, arguments: _message);
   }
+
+
+
 }

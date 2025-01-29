@@ -946,7 +946,7 @@ class LaravelApiClient extends GetxService with ApiClient {
       List<Appointment> appointments = response.data['data']
           .map<Appointment>((obj) => Appointment.fromJson(obj))
           .toList();
-
+      Get.log("-------------AFTERRR-----------");
       // Filter appointments based on statusId
       appointments = appointments.where((appointment) {
         print("Comparing::::"+appointment.status!.id + statusId);

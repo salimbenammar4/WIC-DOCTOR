@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../widgets/review_popup.dart';
 import '../../../../common/ui.dart';
@@ -20,10 +21,12 @@ import '../widgets/doctor_title_bar_widget.dart';
 import '../widgets/review_item_widget.dart';
 
 class DoctorView extends GetView<DoctorController> {
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       var _doctor = controller.doctor.value;
+      final String mapsUrl = 'geo:0,0?q=${Uri.encodeComponent(_doctor.address!.address)}';
       if (!_doctor.hasData) {
         return Scaffold(
           body: CircularLoadingWidget(height: Get.height),
@@ -99,13 +102,59 @@ class DoctorView extends GetView<DoctorController> {
                       }),
                     ).marginOnly(bottom: 50),
                   ),
-                  //WelcomeWidget(),
                   SliverToBoxAdapter(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         SizedBox(height: 10),
                         buildSpecialities(_doctor),
+
+                        // Add the address widget here
+                        DoctorTilWidget(
+                          title: Text("Address".tr, style: Get.textTheme.titleSmall),
+                          content: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Color(0xFF18167A),
+                                size: 18,
+                              ),
+                              SizedBox(width: 5), // Space between the icon and the text
+                              Expanded(
+                                child: Text(
+                                  _doctor.address!.address,
+                                  style: Get.textTheme.bodySmall,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1, // Ensure it's a single line
+                                ),
+                              ),
+                              // Button to open the address in Google Maps
+                              IconButton(
+                                icon: Icon(Icons.map, color: Color(0xFF18167A)),
+                                onPressed: () async {
+                                  final String mapsUrl = 'geo:0,0?q=${Uri.encodeComponent(_doctor.address!.address)}';
+                                  if (await canLaunch(mapsUrl)) {
+                                    await launch(mapsUrl);
+                                  } else {
+                                    // Provide fallback if Google Maps can't be opened
+                                    throw 'Could not open maps. Please ensure Google Maps is installed.';
+                                  }
+                                },
+                              ),
+                            ],
+                          ).paddingSymmetric(vertical: 5),
+                        ),
+
+
+                      ],
+                    ),
+                  ),
+
+                  //WelcomeWidget(),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
                         DoctorTilWidget(
                           title: Text("Description".tr, style: Get.textTheme.titleSmall),
                           content: Obx(() {
@@ -553,6 +602,8 @@ class DoctorView extends GetView<DoctorController> {
       ),
     );
   }
+
+
 
   Widget buildDoctorClinic(Doctor _doctor) {
     if (_doctor.clinic.hasData ?? false) {
