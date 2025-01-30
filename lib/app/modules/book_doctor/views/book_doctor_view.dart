@@ -542,9 +542,12 @@ class BookDoctorView extends GetView<BookDoctorController> {
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          "Sorry, this doctor is not available on the selected date.".tr,
-                          style: Get.textTheme.bodyMedium?.copyWith(color: Colors.red),
+                        child: Center( // Center the text horizontally
+                          child: Text(
+                            "Sorry, this doctor is not available on the selected date.".tr,
+                            style: Get.textTheme.bodyMedium?.copyWith(color: Color(0xFF18167A)),
+                            textAlign: TextAlign.center, // Center text inside the widget
+                          ),
                         ),
                       );
                     }
