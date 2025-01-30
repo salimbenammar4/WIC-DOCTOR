@@ -964,29 +964,32 @@ class LaravelApiClient extends GetxService with ApiClient {
   Future<List<Pattern>> getPatterns(String doctorId) async {
     print("Doctor_ID: $doctorId");
 
-    // Build the API URI
-    Uri _uri = getApiBaseUri("patterns-by-doctor/$doctorId");
-    Get.log(_uri.toString());
+    try {
+      // Build the API URI
+      Uri _uri = getApiBaseUri("patterns-by-doctor/$doctorId");
+      Get.log(_uri.toString());
 
-    // Make the HTTP GET request
-    var response = await httpClient.getUri(_uri, options: optionsNetwork);
+      // Make the HTTP GET request
+      var response = await httpClient.getUri(_uri, options: optionsNetwork);
 
-    // Check if the API response is successful
-    if (response.data['status'] == 200) {
-      Get.log("-------------status-----------");
+      // Check if the API response is successful
+      if (response.data['status'] == 200) {
+        Get.log("-------------status-----------");
 
-      // Parse the response data into a list of Pattern objects
-      List<Pattern> patterns = response.data['data']
-          .map<Pattern>((obj) => Pattern.fromJson(obj))
-          .toList();
-
-      // Return the parsed patterns
-      return patterns;
-    } else {
-      // Throw an exception if there's an error in the response
-      throw new Exception(response.data['message']);
+        // Parse and return the list of Pattern objects
+        return response.data['data']
+            .map<Pattern>((obj) => Pattern.fromJson(obj))
+            .toList();
+      }
+    } catch (e) {
+      // Log the error without throwing an exception
+      Get.log("Error fetching patterns: $e");
     }
+
+    // Return an empty list in case of failure
+    return [];
   }
+
 
 
   Future<List<AppointmentStatus>> getAppointmentStatuses() async {
@@ -1610,21 +1613,29 @@ class LaravelApiClient extends GetxService with ApiClient {
   }
 
   Future<List> getAvailabilityHours(String doctorId, DateTime date, bool online) async {
+    try {
+      Get.log(online.toString());
 
-    Get.log(online.toString());
-    var _queryParameters = {
-      'date': DateFormat('y-MM-dd').format(date),
-      'online': online.toString(),
-    };
-    Get.log("ONLINE---------------");
-    Uri _uri = getApiBaseUri("availability_hours/$doctorId").replace(queryParameters: _queryParameters);
-    Get.log(_uri.toString());
-    var response = await httpClient.getUri(_uri, options: optionsNetwork);
-    if (response.data['success'] == true) {
-      return response.data['data'];
-    } else {
-      throw new Exception(response.data['message']);
+      var _queryParameters = {
+        'date': DateFormat('y-MM-dd').format(date),
+        'online': online.toString(),
+      };
+
+      Get.log("ONLINE---------------");
+      Uri _uri = getApiBaseUri("availability_hours/$doctorId").replace(queryParameters: _queryParameters);
+      Get.log(_uri.toString());
+
+      var response = await httpClient.getUri(_uri, options: optionsNetwork);
+
+      if (response.data['success'] == true) {
+        return response.data['data'];
+      }
+    } catch (e) {
+      Get.log("Error fetching availability hours: $e");
     }
+
+    // Return an empty list in case of failure
+    return [];
   }
 
   Future<List<Patient>> getAllClinicPatientsWithPagination(String clinicID, int page) async {
