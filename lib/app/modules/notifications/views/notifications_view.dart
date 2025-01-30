@@ -39,7 +39,7 @@ class NotificationsView extends GetView<NotificationsController> {
           primary: true,
           children: <Widget>[
             Text("Incoming Notifications".tr, style: Get.textTheme.headlineSmall).paddingOnly(top: 25, bottom: 0, right: 22, left: 22),
-            Text("Swipe item left to delete it.".tr, style: Get.textTheme.bodySmall).paddingSymmetric(horizontal: 22, vertical: 5),
+            Text("Swipe item left or right to delete it.".tr, style: Get.textTheme.bodySmall).paddingSymmetric(horizontal: 22, vertical: 5),
             notificationsList(),
           ],
         ),

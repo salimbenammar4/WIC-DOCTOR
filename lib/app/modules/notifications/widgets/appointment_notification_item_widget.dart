@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../models/appointment_model.dart';
 import '../../../models/notification_model.dart' as model;
 import '../../../routes/app_routes.dart';
+import '../../root/controllers/root_controller.dart';
 import '../controllers/notifications_controller.dart';
 import 'notification_item_widget.dart';
 
@@ -24,7 +25,7 @@ class AppointmentNotificationItemWidget extends GetView<NotificationsController>
         size: 34,
       ),
       onTap: (notification) async {
-        Get.toNamed(Routes.APPOINTMENT, arguments: new Appointment(id: notification.data['appointment_id'].toString()));
+        await Get.find<RootController>().changePage(1);
         await controller.markAsReadNotification(notification);
       },
     );

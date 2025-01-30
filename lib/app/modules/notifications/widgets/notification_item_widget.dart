@@ -43,11 +43,8 @@ class NotificationItemWidget extends StatelessWidget {
         ),
       ),
       onDismissed: (direction) {
-        // Call the onDismissed callback
         onDismissed(this.notification);
-        // Directly call removeNotification in the controller to update the list
         controller.removeNotification(this.notification);
-        // Show a snackbar after item is dismissed
       },
       child: GestureDetector(
         onTap: () {
