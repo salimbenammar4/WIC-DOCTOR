@@ -36,6 +36,7 @@ class MessagesView extends GetView<MessagesController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(MessagesController());
     // Set the status bar style dynamically
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // Transparent status bar
@@ -78,12 +79,25 @@ class MessagesView extends GetView<MessagesController> {
                 await controller.listenForMessages();
               },
               child: Obx(
-                    () => controller.messages.isNotEmpty
-                    ? conversationsList()
-                    : CircularLoadingWidget(
-                  height: Get.height,
-                  onCompleteText: "Messages List Empty".tr,
-                ),
+                    () {
+                  if (controller.isLoading.value && controller.messages.isEmpty) {
+                    // Show loading indicator while fetching messages for the first time
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (controller.messages.isNotEmpty) {
+                    // Show the messages list when messages are available
+                    return conversationsList();
+                  }
+
+                  // Show "Messages List Empty" when there are no messages
+                  return Center(
+                    child: Text(
+                      "Messages List Empty".tr,
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  );
+                },
               ),
             ),
           ),

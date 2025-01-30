@@ -1,3 +1,7 @@
+/*Brought back to life by:
+* SALIM BEN AMMAR
+* */
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
@@ -409,6 +413,7 @@ class BookDoctorView extends GetView<BookDoctorController> {
                       ),
                       SizedBox(height: 10),
                       Obx(() {
+                        Get.put(TabBarController(), tag: 'hours');
                         if (controller.addresses.isEmpty) {
                           return TabBarLoadingWidget();
                         } else {
@@ -458,6 +463,7 @@ class BookDoctorView extends GetView<BookDoctorController> {
               );
             }),
             Container(
+
               decoration: Ui.getBoxDecoration(),
               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               padding: EdgeInsets.symmetric(vertical: 10),

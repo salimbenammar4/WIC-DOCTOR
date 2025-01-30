@@ -1,6 +1,9 @@
+/*
+*     Redesigned by:
+*     SALIM BEN AMMAR
+* */
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../common/ui.dart';
 import '../../../providers/laravel_provider.dart';
 import '../../../services/translation_service.dart';
@@ -23,7 +26,7 @@ class LanguageView extends GetView<LanguageController> {
                   style: context.textTheme.titleLarge?.copyWith(color: Colors.white),
                 ),
                 centerTitle: true,
-                backgroundColor: Color(0xFF5C6BC0),
+                backgroundColor: Color(0xFF18167A),
                 automaticallyImplyLeading: false,
                 leading: new IconButton(
                   icon: new Icon(Icons.arrow_back_ios, color: Colors.white),

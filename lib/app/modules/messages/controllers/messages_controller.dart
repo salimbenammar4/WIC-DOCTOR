@@ -74,32 +74,35 @@ class MessagesController extends GetxController {
     await listenForMessages(); // Fetch messages again
   }
 
-  Future listenForMessages() async {
+  Future<void> listenForMessages() async {
     isLoading.value = true;
     isDone.value = false;
-    Stream<QuerySnapshot> _userMessages;
 
-    if (lastDocument.value == null) {
-      _userMessages = _chatRepository.getUserMessages(_authService.user.value.id);
-    } else {
-      _userMessages = _chatRepository.getUserMessagesStartAt(_authService.user.value.id, lastDocument.value!);
-    }
+    Stream<QuerySnapshot> _userMessages = (lastDocument.value == null)
+        ? _chatRepository.getUserMessages(_authService.user.value.id)
+        : _chatRepository.getUserMessagesStartAt(_authService.user.value.id, lastDocument.value!);
 
     _userMessages.listen((QuerySnapshot query) {
       if (query.docs.isNotEmpty) {
-        query.docs.forEach((element) {
-          Message newMessage = Message.fromDocumentSnapshot(element);
-          if (!messages.any((msg) => msg.id == newMessage.id)) {
-            messages.add(newMessage);
-          }
-        });
+        var newMessages = query.docs
+            .map((doc) => Message.fromDocumentSnapshot(doc))
+            .where((newMessage) => !messages.any((msg) => msg.id == newMessage.id))
+            .toList();
+
+        messages.addAll(newMessages);
         lastDocument.value = query.docs.last;
       } else {
         isDone.value = true;
       }
+
       isLoading.value = false;
+    }, onError: (e) {
+      isLoading.value = false;
+      isDone.value = true;
+      print("Error fetching messages: $e");
     });
   }
+
 
   listenForChats() async {
     message.value = await _chatRepository.getMessage(message.value);

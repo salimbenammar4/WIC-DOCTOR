@@ -1,9 +1,6 @@
-/*
- * File name: custom_pages_view.dart
- * Last modified: 2022.02.18 at 19:24:11
- * Author: SmarterVision - https://codecanyon.net/user/smartervision
- * Copyright (c) 2022
- */
+/*Did someone mention:
+* SALIM BEN AMMAR
+* */
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +22,7 @@ class CustomPagesView extends GetView<CustomPagesController> {
           );
         }),
         centerTitle: true,
-        backgroundColor: Color(0xFF5C6BC0), // Set background color using the hex code
+        backgroundColor: Color(0xFF18167A), // Set background color using the hex code
         elevation: 0, // Remove AppBar shadow
         automaticallyImplyLeading: false,
         leading: IconButton(

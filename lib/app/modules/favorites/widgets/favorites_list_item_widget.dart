@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2020 .
- */
-
+*     Fixed and got much perfect by:
+*     SALIM BEN AMMAR
+* */
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';

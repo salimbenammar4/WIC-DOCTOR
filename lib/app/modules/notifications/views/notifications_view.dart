@@ -1,6 +1,9 @@
+/*
+*     Someone made a beautiful thing here:
+*     SALIM BEN AMMAR
+* */
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../providers/laravel_provider.dart';
 import '../../global_widgets/circular_loading_widget.dart';
 import '../controllers/notifications_controller.dart';

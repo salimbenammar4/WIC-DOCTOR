@@ -1,3 +1,7 @@
+/*This guy was here:
+* SALIM BEN AMMAR
+* */
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -53,7 +57,7 @@ class AppointmentsView extends GetView<AppointmentsController> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0), // Apply horizontal padding here
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFF5C6BC0), width: 2), // Border color and width
+                        border: Border.all(color: Color(0xFF18167A), width: 2), // Border color and width
                         borderRadius: BorderRadius.circular(8.0), // Rounded corners
                       ),
                       child: DropdownButton<String>(
@@ -73,6 +77,7 @@ class AppointmentsView extends GetView<AppointmentsController> {
                         isExpanded: true,
                         underline: Container(), // Removes default underline
                         hint: Text("Select a status".tr), // Placeholder text
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       ),
                     ),
                   ),

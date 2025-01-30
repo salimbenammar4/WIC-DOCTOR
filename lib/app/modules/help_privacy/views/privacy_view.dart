@@ -14,7 +14,7 @@ class PrivacyView extends GetView<PrivacyController> {
             style: Get.textTheme.titleLarge?.copyWith(color: Colors.white), // Set title color to white
           ),
           centerTitle: true,
-          backgroundColor: Color(0xFF5C6BC0), // Set background color using the hex code
+          backgroundColor: Color(0xFF18167A), // Set background color using the hex code
           elevation: 0, // Remove AppBar shadow
           automaticallyImplyLeading: false,
           leading: IconButton(

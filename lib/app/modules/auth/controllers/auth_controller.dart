@@ -1,9 +1,12 @@
-import 'dart:async';
+/*
+*     You can't do this. Only the guy below can:
+*     SALIM BEN AMMAR
+* */
 
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../common/ui.dart';
 import '../../../../main.dart';
 import '../../../models/user_model.dart';

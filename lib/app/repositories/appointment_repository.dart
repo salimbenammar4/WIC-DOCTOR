@@ -44,6 +44,12 @@ class AppointmentRepository {
   Future<Review> addClinicReview(Review review) {
     return _laravelApiClient.addClinicReview(review);
   }
+
+  /*
+*     Redesigned by:
+*     SALIM BEN AMMAR
+* */
+
   Future<List<Appointment>> getAppointmentsByIds(List<String> appointmentIds) async {
     List<Appointment> appointments = [];
 
