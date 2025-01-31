@@ -17,8 +17,8 @@ class DoctorRepository {
     return _laravelApiClient.getAllDoctorsWithPagination(specialityId, page);
   }
 
-  Future<List<Doctor>> search(String? keywords, List<String> specialities, {int page = 1}) {
-    return _laravelApiClient.searchDoctors(keywords, specialities, page);
+  Future<List<Doctor>> search(String? keywords, List<String> specialities, {List<String>? regions, int page = 1}) {
+    return _laravelApiClient.searchDoctors(keywords, specialities, regions ?? [], page);
   }
 
   Future<List<Favorite>> getFavorites() {

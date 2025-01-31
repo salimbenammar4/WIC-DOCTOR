@@ -15,7 +15,28 @@ class SearchServicesListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (this.doctors.isEmpty) {
-        return CircularLoadingWidget(height: 300);
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.search_off,  // Icon of your choice
+                size: 80,           // Set the size of the icon
+                color: Color(0xFF18167A), // Icon color
+              ),
+              SizedBox(height: 10),
+              Text(
+                'No matches'.tr,       // Message text
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color(0xFF18167A),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        );
       } else {
         return ListView.builder(
           padding: EdgeInsets.only(bottom: 10, top: 10),

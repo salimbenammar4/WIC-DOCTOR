@@ -318,28 +318,37 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  Future<List<Doctor>> searchDoctors(String? keywords, List<String> specialities, int page) async {
+  Future<List<Doctor>> searchDoctors(String? keywords, List<String> specialities, List<String> regions, int page) async {
     final _address = Get.find<SettingsService>().address.value;
-    // TODO Pagination
+
     var _queryParameters = {
       'with': 'address;specialities',
       'search': 'specialities.id:${specialities.join(',')};name:$keywords',
       'searchFields': 'specialities.id:in;name:like',
       'searchJoin': 'and',
     };
+
+    // Add gouvernorat (region) filter if regions are selected
+    if (regions.isNotEmpty) {
+      _queryParameters['gouvernorat'] = regions.join(',');
+    }
+
     if (!_address.isUnknown()) {
       _queryParameters['myLat'] = _address.latitude.toString();
       _queryParameters['myLon'] = _address.longitude.toString();
     }
+
     Uri _uri = getApiBaseUri("doctors").replace(queryParameters: _queryParameters);
     Get.log(_uri.toString());
+
     var response = await httpClient.getUri(_uri, options: optionsNetwork);
     if (response.data['success'] == true) {
       return response.data['data'].map<Doctor>((obj) => Doctor.fromJson(obj)).toList();
     } else {
-      throw new Exception(response.data['message']);
+      throw Exception(response.data['message']);
     }
   }
+
 
   Future<List<Favorite>> getFavoritesDoctors() async {
     if (!authService.isAuth) {

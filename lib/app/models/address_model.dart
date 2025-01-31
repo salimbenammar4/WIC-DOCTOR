@@ -13,14 +13,16 @@ class Address extends Model {
   bool? _isDefault;
   String? _userId;
   String? _ville;
+  String? _gouvernorat;
 
-  Address({String? id, String? description, String? address, double? latitude, double? longitude, String? userId, bool? isDefault, String? ville}) {
+  Address({String? id, String? description, String? address, double? latitude, double? longitude, String? userId, bool? isDefault, String? ville, String? gouvernorat}) {
     _userId = userId;
     _longitude = longitude;
     _latitude = latitude;
     _address = address;
     _description = description;
     _ville=ville;
+    _gouvernorat = gouvernorat;
     this.id = id;
 
   }
@@ -36,6 +38,7 @@ class Address extends Model {
     _isDefault = boolFromJson(json, 'default');
     if (json!=null && json['ville']!=null){
     _ville = stringFromJson(jsonDecode(json['ville']), 'fr');}
+    _gouvernorat = stringFromJson(jsonDecode(json?['gouvernorat']), 'fr');
     _userId = stringFromJson(json, 'user_id');
   }
 
@@ -43,6 +46,12 @@ class Address extends Model {
 
   set address(String? value) {
     _address = value;
+  }
+
+  String get gouvernorat => _gouvernorat ?? '';
+
+  set gouvernorat(String? value) {
+    _gouvernorat = value;
   }
 
   String get ville => _ville ?? '';
@@ -120,6 +129,9 @@ class Address extends Model {
     }
     if (this._ville != null) {
       data['ville'] = this._ville;
+    }
+    if (this._gouvernorat != null) {
+      data['gouvernorat'] = this._gouvernorat;
     }
     if (this._latitude != null) {
       data['latitude'] = this._latitude;

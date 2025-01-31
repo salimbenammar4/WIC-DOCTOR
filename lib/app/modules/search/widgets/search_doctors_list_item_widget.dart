@@ -23,7 +23,9 @@ class SearchServicesListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.DOCTOR, arguments: {'doctor': _doctor, 'heroTag': 'search_list'});
+        Get.log("Navigating to doctor with ID: ${_doctor.id}");
+        print("Doctor ID: ${_doctor.id}");
+        Get.toNamed(Routes.DOCTOR, arguments: {'doctor': _doctor.id, 'heroTag': 'search_list'});
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),

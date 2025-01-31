@@ -16,7 +16,13 @@ class SearchController extends GetxController {
   final doctors = <Doctor>[].obs;
   late DoctorRepository _doctorRepository;
   late SpecialityRepository _specialityRepository;
-
+  final List<String> regions = [
+    "Tunis", "Ariana", "Ben Arous", "La Manouba", "Nabeul", "Zaghouan",
+    "Bizerte", "Beja", "Jendouba", "Kef", "Siliana", "Sousse",
+    "Monastir", "Mahdia", "Kairouan", "Kasserine", "Sidi Bouzid",
+    "Sfax", "Gabes", "Medenine", "Tataouine", "Gafsa", "Tozeur", "Kebili"
+  ].obs;
+  final RxList<String> selectedRegions = <String>[].obs;
   SearchController() {
     _doctorRepository = new DoctorRepository();
     _specialityRepository = new SpecialityRepository();
@@ -49,11 +55,16 @@ class SearchController extends GetxController {
 
   Future searchDoctors({String? keywords}) async {
     try {
-      if (selectedSpecialities.isEmpty) {
-        doctors.assignAll(await _doctorRepository.search(keywords, specialities.map((element) => element.id).toList()));
-      } else {
-        doctors.assignAll(await _doctorRepository.search(keywords, selectedSpecialities.toList()));
-      }
+      List<String> specialitiesToFilter = selectedSpecialities.isEmpty
+          ? specialities.map((element) => element.id).toList()
+          : selectedSpecialities.toList();
+
+      doctors.assignAll(await _doctorRepository.search(
+        keywords,
+        specialitiesToFilter,
+        regions: selectedRegions.toList(), // ✅ Use named argument for regions
+        page: 1, // ✅ Use named argument for page
+      ));
     } catch (e) {
       Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
@@ -76,6 +87,14 @@ class SearchController extends GetxController {
       selectedSpecialities.add(speciality.id);
     } else {
       selectedSpecialities.removeWhere((element) => element == speciality.id);
+    }
+  }
+
+  void toggleRegion(bool selected, String region) {
+    if (selected) {
+      selectedRegions.add(region);
+    } else {
+      selectedRegions.remove(region);
     }
   }
 }

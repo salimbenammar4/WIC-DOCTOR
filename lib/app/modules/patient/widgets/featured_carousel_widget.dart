@@ -39,14 +39,14 @@ class FeaturedCarouselWidget extends GetWidget<PatientController> {
                 child: Column(
                   children: [
                     Hero(
-                      tag: 'featured_carousel' + _doctor.id,
+                      tag: 'featured_carousel' + _doctor.id.toString(),
                       child: ClipRRect(
                         borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                         child: CachedNetworkImage(
                           height: 140,
                           width: double.infinity,
                           fit: BoxFit.cover,
-                          imageUrl: _doctor.firstImageUrl,
+                          imageUrl: _doctor.firstImageUrl ?? '',
                           placeholder: (context, url) => Image.asset(
                             'assets/img/loading.gif',
                             fit: BoxFit.cover,

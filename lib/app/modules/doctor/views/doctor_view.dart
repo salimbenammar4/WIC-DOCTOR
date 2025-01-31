@@ -1,5 +1,6 @@
-/*By the one and only:
-* SALIM BEN AMMAR
+/*
+*     By the one and only:
+*     SALIM BEN AMMAR
 * */
 
 import 'package:cached_network_image/cached_network_image.dart';

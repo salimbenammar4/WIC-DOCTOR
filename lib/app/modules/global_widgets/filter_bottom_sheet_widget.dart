@@ -12,7 +12,7 @@ class FilterBottomSheetWidget extends GetView<searchController.SearchController>
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height - 90,
+      height: Get.height - 300,
       decoration: BoxDecoration(
         color: Get.theme.primaryColor,
         borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
@@ -23,13 +23,13 @@ class FilterBottomSheetWidget extends GetView<searchController.SearchController>
       child: Stack(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 80),
+            padding: const EdgeInsets.only(top: 90),
             child: ListView(
               padding: EdgeInsets.only(top: 20, bottom: 15, left: 4, right: 4),
               children: [
                 Obx(() {
                   if (controller.specialities.isEmpty) {
-                    return CircularLoadingWidget(height: 100);
+                    return CircularLoadingWidget(height: 50);
                   }
                   return ExpansionTile(
                     title: Text("Specialities".tr, style: Get.textTheme.bodyMedium),
@@ -52,7 +52,35 @@ class FilterBottomSheetWidget extends GetView<searchController.SearchController>
                         );
                       });
                     }),
-                    initiallyExpanded: true,
+                    initiallyExpanded: false,
+                  );
+                }),
+                Obx(() {
+                  if (controller.regions.isEmpty) {
+                    return CircularLoadingWidget(height: 100);
+                  }
+                  return ExpansionTile(
+                    title: Text("Gouvernorats".tr, style: Get.textTheme.bodyMedium),
+                    children: List.generate(controller.regions.length, (index) {
+                      var region = controller.regions[index];
+                      return Obx(() {
+                        return CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.trailing,
+                          value: controller.selectedRegions.contains(region),
+                          onChanged: (value) {
+                            controller.toggleRegion(value!, region);
+                          },
+                          title: Text(
+                            region,
+                            style: Get.textTheme.bodyLarge,
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            maxLines: 1,
+                          ),
+                        );
+                      });
+                    }),
+                    initiallyExpanded: false,
                   );
                 }),
               ],
